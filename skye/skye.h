@@ -142,6 +142,22 @@ typedef enum LED_CONTROL_MODE
 } LED_CONTROL_MODE;
 #endif
 
+/** @brief Battery status bit flags. */
+#ifndef HAVE_ENUM_BATTERY_STATUS_BITS
+#define HAVE_ENUM_BATTERY_STATUS_BITS
+typedef enum BATTERY_STATUS_BITS
+{
+	BATTERY_STATUS_BIT_ATTACHED=1, /* Battery has been detected | */
+	BATTERY_STATUS_BIT_UNDERVOLTAGE=2, /* Battery has undervoltage | */
+	BATTERY_STATUS_BIT_DISABLED=4, /* Battery has been disabled | */
+	BATTERY_STATUS_BIT_CHARGING=8, /* Battery is being charged | */
+	BATTERY_STATUS_BIT_BALANCING=16, /* Battery is being balanced | */
+	BATTERY_STATUS_BIT_FULL=32, /* Battery is fully charged | */
+	BATTERY_STATUS_BIT_ERROR=128, /* Battery error occured | */
+	BATTERY_STATUS_BITS_ENUM_END=129, /*  | */
+} BATTERY_STATUS_BITS;
+#endif
+
 #include "../common/common.h"
 
 // MAVLINK VERSION
