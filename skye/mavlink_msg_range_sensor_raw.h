@@ -4,22 +4,22 @@
 
 typedef struct __mavlink_range_sensor_raw_t
 {
- float distance[6]; ///< Distances to receiver modules
+ float dist_raw[6]; ///< Distances to receiver modules
  uint8_t sender_idx; ///< Sender module index
 } mavlink_range_sensor_raw_t;
 
 #define MAVLINK_MSG_ID_RANGE_SENSOR_RAW_LEN 25
 #define MAVLINK_MSG_ID_215_LEN 25
 
-#define MAVLINK_MSG_ID_RANGE_SENSOR_RAW_CRC 90
-#define MAVLINK_MSG_ID_215_CRC 90
+#define MAVLINK_MSG_ID_RANGE_SENSOR_RAW_CRC 73
+#define MAVLINK_MSG_ID_215_CRC 73
 
-#define MAVLINK_MSG_RANGE_SENSOR_RAW_FIELD_DISTANCE_LEN 6
+#define MAVLINK_MSG_RANGE_SENSOR_RAW_FIELD_DIST_RAW_LEN 6
 
 #define MAVLINK_MESSAGE_INFO_RANGE_SENSOR_RAW { \
 	"RANGE_SENSOR_RAW", \
 	2, \
-	{  { "distance", NULL, MAVLINK_TYPE_FLOAT, 6, 0, offsetof(mavlink_range_sensor_raw_t, distance) }, \
+	{  { "dist_raw", NULL, MAVLINK_TYPE_FLOAT, 6, 0, offsetof(mavlink_range_sensor_raw_t, dist_raw) }, \
          { "sender_idx", NULL, MAVLINK_TYPE_UINT8_T, 0, 24, offsetof(mavlink_range_sensor_raw_t, sender_idx) }, \
          } \
 }
@@ -32,21 +32,21 @@ typedef struct __mavlink_range_sensor_raw_t
  * @param msg The MAVLink message to compress the data into
  *
  * @param sender_idx Sender module index
- * @param distance Distances to receiver modules
+ * @param dist_raw Distances to receiver modules
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_range_sensor_raw_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-						       uint8_t sender_idx, const float *distance)
+						       uint8_t sender_idx, const float *dist_raw)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	char buf[MAVLINK_MSG_ID_RANGE_SENSOR_RAW_LEN];
 	_mav_put_uint8_t(buf, 24, sender_idx);
-	_mav_put_float_array(buf, 0, distance, 6);
+	_mav_put_float_array(buf, 0, dist_raw, 6);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_RANGE_SENSOR_RAW_LEN);
 #else
 	mavlink_range_sensor_raw_t packet;
 	packet.sender_idx = sender_idx;
-	mav_array_memcpy(packet.distance, distance, sizeof(float)*6);
+	mav_array_memcpy(packet.dist_raw, dist_raw, sizeof(float)*6);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_RANGE_SENSOR_RAW_LEN);
 #endif
 
@@ -65,22 +65,22 @@ static inline uint16_t mavlink_msg_range_sensor_raw_pack(uint8_t system_id, uint
  * @param chan The MAVLink channel this message will be sent over
  * @param msg The MAVLink message to compress the data into
  * @param sender_idx Sender module index
- * @param distance Distances to receiver modules
+ * @param dist_raw Distances to receiver modules
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_range_sensor_raw_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
 							   mavlink_message_t* msg,
-						           uint8_t sender_idx,const float *distance)
+						           uint8_t sender_idx,const float *dist_raw)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	char buf[MAVLINK_MSG_ID_RANGE_SENSOR_RAW_LEN];
 	_mav_put_uint8_t(buf, 24, sender_idx);
-	_mav_put_float_array(buf, 0, distance, 6);
+	_mav_put_float_array(buf, 0, dist_raw, 6);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_RANGE_SENSOR_RAW_LEN);
 #else
 	mavlink_range_sensor_raw_t packet;
 	packet.sender_idx = sender_idx;
-	mav_array_memcpy(packet.distance, distance, sizeof(float)*6);
+	mav_array_memcpy(packet.dist_raw, dist_raw, sizeof(float)*6);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_RANGE_SENSOR_RAW_LEN);
 #endif
 
@@ -102,7 +102,7 @@ static inline uint16_t mavlink_msg_range_sensor_raw_pack_chan(uint8_t system_id,
  */
 static inline uint16_t mavlink_msg_range_sensor_raw_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_range_sensor_raw_t* range_sensor_raw)
 {
-	return mavlink_msg_range_sensor_raw_pack(system_id, component_id, msg, range_sensor_raw->sender_idx, range_sensor_raw->distance);
+	return mavlink_msg_range_sensor_raw_pack(system_id, component_id, msg, range_sensor_raw->sender_idx, range_sensor_raw->dist_raw);
 }
 
 /**
@@ -116,7 +116,7 @@ static inline uint16_t mavlink_msg_range_sensor_raw_encode(uint8_t system_id, ui
  */
 static inline uint16_t mavlink_msg_range_sensor_raw_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_range_sensor_raw_t* range_sensor_raw)
 {
-	return mavlink_msg_range_sensor_raw_pack_chan(system_id, component_id, chan, msg, range_sensor_raw->sender_idx, range_sensor_raw->distance);
+	return mavlink_msg_range_sensor_raw_pack_chan(system_id, component_id, chan, msg, range_sensor_raw->sender_idx, range_sensor_raw->dist_raw);
 }
 
 /**
@@ -124,16 +124,16 @@ static inline uint16_t mavlink_msg_range_sensor_raw_encode_chan(uint8_t system_i
  * @param chan MAVLink channel to send the message
  *
  * @param sender_idx Sender module index
- * @param distance Distances to receiver modules
+ * @param dist_raw Distances to receiver modules
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_range_sensor_raw_send(mavlink_channel_t chan, uint8_t sender_idx, const float *distance)
+static inline void mavlink_msg_range_sensor_raw_send(mavlink_channel_t chan, uint8_t sender_idx, const float *dist_raw)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	char buf[MAVLINK_MSG_ID_RANGE_SENSOR_RAW_LEN];
 	_mav_put_uint8_t(buf, 24, sender_idx);
-	_mav_put_float_array(buf, 0, distance, 6);
+	_mav_put_float_array(buf, 0, dist_raw, 6);
 #if MAVLINK_CRC_EXTRA
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_RANGE_SENSOR_RAW, buf, MAVLINK_MSG_ID_RANGE_SENSOR_RAW_LEN, MAVLINK_MSG_ID_RANGE_SENSOR_RAW_CRC);
 #else
@@ -142,7 +142,7 @@ static inline void mavlink_msg_range_sensor_raw_send(mavlink_channel_t chan, uin
 #else
 	mavlink_range_sensor_raw_t packet;
 	packet.sender_idx = sender_idx;
-	mav_array_memcpy(packet.distance, distance, sizeof(float)*6);
+	mav_array_memcpy(packet.dist_raw, dist_raw, sizeof(float)*6);
 #if MAVLINK_CRC_EXTRA
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_RANGE_SENSOR_RAW, (const char *)&packet, MAVLINK_MSG_ID_RANGE_SENSOR_RAW_LEN, MAVLINK_MSG_ID_RANGE_SENSOR_RAW_CRC);
 #else
@@ -159,12 +159,12 @@ static inline void mavlink_msg_range_sensor_raw_send(mavlink_channel_t chan, uin
   is usually the receive buffer for the channel, and allows a reply to an
   incoming message with minimum stack space usage.
  */
-static inline void mavlink_msg_range_sensor_raw_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint8_t sender_idx, const float *distance)
+static inline void mavlink_msg_range_sensor_raw_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  uint8_t sender_idx, const float *dist_raw)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	char *buf = (char *)msgbuf;
 	_mav_put_uint8_t(buf, 24, sender_idx);
-	_mav_put_float_array(buf, 0, distance, 6);
+	_mav_put_float_array(buf, 0, dist_raw, 6);
 #if MAVLINK_CRC_EXTRA
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_RANGE_SENSOR_RAW, buf, MAVLINK_MSG_ID_RANGE_SENSOR_RAW_LEN, MAVLINK_MSG_ID_RANGE_SENSOR_RAW_CRC);
 #else
@@ -173,7 +173,7 @@ static inline void mavlink_msg_range_sensor_raw_send_buf(mavlink_message_t *msgb
 #else
 	mavlink_range_sensor_raw_t *packet = (mavlink_range_sensor_raw_t *)msgbuf;
 	packet->sender_idx = sender_idx;
-	mav_array_memcpy(packet->distance, distance, sizeof(float)*6);
+	mav_array_memcpy(packet->dist_raw, dist_raw, sizeof(float)*6);
 #if MAVLINK_CRC_EXTRA
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_RANGE_SENSOR_RAW, (const char *)packet, MAVLINK_MSG_ID_RANGE_SENSOR_RAW_LEN, MAVLINK_MSG_ID_RANGE_SENSOR_RAW_CRC);
 #else
@@ -199,13 +199,13 @@ static inline uint8_t mavlink_msg_range_sensor_raw_get_sender_idx(const mavlink_
 }
 
 /**
- * @brief Get field distance from range_sensor_raw message
+ * @brief Get field dist_raw from range_sensor_raw message
  *
  * @return Distances to receiver modules
  */
-static inline uint16_t mavlink_msg_range_sensor_raw_get_distance(const mavlink_message_t* msg, float *distance)
+static inline uint16_t mavlink_msg_range_sensor_raw_get_dist_raw(const mavlink_message_t* msg, float *dist_raw)
 {
-	return _MAV_RETURN_float_array(msg, distance, 6,  0);
+	return _MAV_RETURN_float_array(msg, dist_raw, 6,  0);
 }
 
 /**
@@ -217,7 +217,7 @@ static inline uint16_t mavlink_msg_range_sensor_raw_get_distance(const mavlink_m
 static inline void mavlink_msg_range_sensor_raw_decode(const mavlink_message_t* msg, mavlink_range_sensor_raw_t* range_sensor_raw)
 {
 #if MAVLINK_NEED_BYTE_SWAP
-	mavlink_msg_range_sensor_raw_get_distance(msg, range_sensor_raw->distance);
+	mavlink_msg_range_sensor_raw_get_dist_raw(msg, range_sensor_raw->dist_raw);
 	range_sensor_raw->sender_idx = mavlink_msg_range_sensor_raw_get_sender_idx(msg);
 #else
 	memcpy(range_sensor_raw, _MAV_PAYLOAD(msg), MAVLINK_MSG_ID_RANGE_SENSOR_RAW_LEN);

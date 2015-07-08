@@ -165,15 +165,15 @@ static void mavlink_test_actuation_status(uint8_t system_id, uint8_t component_i
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
 
-static void mavlink_test_position_ctrl_output_raw(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
+static void mavlink_test_position_ctrl_output(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
 {
 	mavlink_message_t msg;
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
-	mavlink_position_ctrl_output_raw_t packet_in = {
+	mavlink_position_ctrl_output_t packet_in = {
 		17.0,45.0,73.0
     };
-	mavlink_position_ctrl_output_raw_t packet1, packet2;
+	mavlink_position_ctrl_output_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
         	packet1.F_x = packet_in.F_x;
         	packet1.F_y = packet_in.F_y;
@@ -182,18 +182,18 @@ static void mavlink_test_position_ctrl_output_raw(uint8_t system_id, uint8_t com
         
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_position_ctrl_output_raw_encode(system_id, component_id, &msg, &packet1);
-	mavlink_msg_position_ctrl_output_raw_decode(&msg, &packet2);
+	mavlink_msg_position_ctrl_output_encode(system_id, component_id, &msg, &packet1);
+	mavlink_msg_position_ctrl_output_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_position_ctrl_output_raw_pack(system_id, component_id, &msg , packet1.F_x , packet1.F_y , packet1.F_z );
-	mavlink_msg_position_ctrl_output_raw_decode(&msg, &packet2);
+	mavlink_msg_position_ctrl_output_pack(system_id, component_id, &msg , packet1.F_x , packet1.F_y , packet1.F_z );
+	mavlink_msg_position_ctrl_output_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_position_ctrl_output_raw_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.F_x , packet1.F_y , packet1.F_z );
-	mavlink_msg_position_ctrl_output_raw_decode(&msg, &packet2);
+	mavlink_msg_position_ctrl_output_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.F_x , packet1.F_y , packet1.F_z );
+	mavlink_msg_position_ctrl_output_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
@@ -201,24 +201,24 @@ static void mavlink_test_position_ctrl_output_raw(uint8_t system_id, uint8_t com
         for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
         	comm_send_ch(MAVLINK_COMM_0, buffer[i]);
         }
-	mavlink_msg_position_ctrl_output_raw_decode(last_msg, &packet2);
+	mavlink_msg_position_ctrl_output_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_position_ctrl_output_raw_send(MAVLINK_COMM_1 , packet1.F_x , packet1.F_y , packet1.F_z );
-	mavlink_msg_position_ctrl_output_raw_decode(last_msg, &packet2);
+	mavlink_msg_position_ctrl_output_send(MAVLINK_COMM_1 , packet1.F_x , packet1.F_y , packet1.F_z );
+	mavlink_msg_position_ctrl_output_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
 
-static void mavlink_test_attitude_ctrl_output_raw(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
+static void mavlink_test_attitude_ctrl_output(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
 {
 	mavlink_message_t msg;
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
-	mavlink_attitude_ctrl_output_raw_t packet_in = {
+	mavlink_attitude_ctrl_output_t packet_in = {
 		17.0,45.0,73.0
     };
-	mavlink_attitude_ctrl_output_raw_t packet1, packet2;
+	mavlink_attitude_ctrl_output_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
         	packet1.M_x = packet_in.M_x;
         	packet1.M_y = packet_in.M_y;
@@ -227,18 +227,18 @@ static void mavlink_test_attitude_ctrl_output_raw(uint8_t system_id, uint8_t com
         
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_attitude_ctrl_output_raw_encode(system_id, component_id, &msg, &packet1);
-	mavlink_msg_attitude_ctrl_output_raw_decode(&msg, &packet2);
+	mavlink_msg_attitude_ctrl_output_encode(system_id, component_id, &msg, &packet1);
+	mavlink_msg_attitude_ctrl_output_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_attitude_ctrl_output_raw_pack(system_id, component_id, &msg , packet1.M_x , packet1.M_y , packet1.M_z );
-	mavlink_msg_attitude_ctrl_output_raw_decode(&msg, &packet2);
+	mavlink_msg_attitude_ctrl_output_pack(system_id, component_id, &msg , packet1.M_x , packet1.M_y , packet1.M_z );
+	mavlink_msg_attitude_ctrl_output_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_attitude_ctrl_output_raw_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.M_x , packet1.M_y , packet1.M_z );
-	mavlink_msg_attitude_ctrl_output_raw_decode(&msg, &packet2);
+	mavlink_msg_attitude_ctrl_output_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.M_x , packet1.M_y , packet1.M_z );
+	mavlink_msg_attitude_ctrl_output_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
@@ -246,24 +246,24 @@ static void mavlink_test_attitude_ctrl_output_raw(uint8_t system_id, uint8_t com
         for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
         	comm_send_ch(MAVLINK_COMM_0, buffer[i]);
         }
-	mavlink_msg_attitude_ctrl_output_raw_decode(last_msg, &packet2);
+	mavlink_msg_attitude_ctrl_output_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_attitude_ctrl_output_raw_send(MAVLINK_COMM_1 , packet1.M_x , packet1.M_y , packet1.M_z );
-	mavlink_msg_attitude_ctrl_output_raw_decode(last_msg, &packet2);
+	mavlink_msg_attitude_ctrl_output_send(MAVLINK_COMM_1 , packet1.M_x , packet1.M_y , packet1.M_z );
+	mavlink_msg_attitude_ctrl_output_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
 
-static void mavlink_test_allocation_output_raw(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
+static void mavlink_test_allocation_output(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
 {
 	mavlink_message_t msg;
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
-	mavlink_allocation_output_raw_t packet_in = {
+	mavlink_allocation_output_t packet_in = {
 		{ 963497464, 963497465, 963497466, 963497467, 963497468, 963497469 },{ 18483, 18484, 18485, 18486, 18487, 18488 }
     };
-	mavlink_allocation_output_raw_t packet1, packet2;
+	mavlink_allocation_output_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
         
         	mav_array_memcpy(packet1.pos, packet_in.pos, sizeof(int32_t)*6);
@@ -271,18 +271,18 @@ static void mavlink_test_allocation_output_raw(uint8_t system_id, uint8_t compon
         
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_allocation_output_raw_encode(system_id, component_id, &msg, &packet1);
-	mavlink_msg_allocation_output_raw_decode(&msg, &packet2);
+	mavlink_msg_allocation_output_encode(system_id, component_id, &msg, &packet1);
+	mavlink_msg_allocation_output_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_allocation_output_raw_pack(system_id, component_id, &msg , packet1.pos , packet1.thrust );
-	mavlink_msg_allocation_output_raw_decode(&msg, &packet2);
+	mavlink_msg_allocation_output_pack(system_id, component_id, &msg , packet1.pos , packet1.thrust );
+	mavlink_msg_allocation_output_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_allocation_output_raw_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.pos , packet1.thrust );
-	mavlink_msg_allocation_output_raw_decode(&msg, &packet2);
+	mavlink_msg_allocation_output_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.pos , packet1.thrust );
+	mavlink_msg_allocation_output_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
@@ -290,12 +290,12 @@ static void mavlink_test_allocation_output_raw(uint8_t system_id, uint8_t compon
         for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
         	comm_send_ch(MAVLINK_COMM_0, buffer[i]);
         }
-	mavlink_msg_allocation_output_raw_decode(last_msg, &packet2);
+	mavlink_msg_allocation_output_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_allocation_output_raw_send(MAVLINK_COMM_1 , packet1.pos , packet1.thrust );
-	mavlink_msg_allocation_output_raw_decode(last_msg, &packet2);
+	mavlink_msg_allocation_output_send(MAVLINK_COMM_1 , packet1.pos , packet1.thrust );
+	mavlink_msg_allocation_output_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
 
@@ -406,7 +406,7 @@ static void mavlink_test_range_sensor_raw(uint8_t system_id, uint8_t component_i
         memset(&packet1, 0, sizeof(packet1));
         	packet1.sender_idx = packet_in.sender_idx;
         
-        	mav_array_memcpy(packet1.distance, packet_in.distance, sizeof(float)*6);
+        	mav_array_memcpy(packet1.dist_raw, packet_in.dist_raw, sizeof(float)*6);
         
 
         memset(&packet2, 0, sizeof(packet2));
@@ -415,12 +415,12 @@ static void mavlink_test_range_sensor_raw(uint8_t system_id, uint8_t component_i
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_range_sensor_raw_pack(system_id, component_id, &msg , packet1.sender_idx , packet1.distance );
+	mavlink_msg_range_sensor_raw_pack(system_id, component_id, &msg , packet1.sender_idx , packet1.dist_raw );
 	mavlink_msg_range_sensor_raw_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_range_sensor_raw_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.sender_idx , packet1.distance );
+	mavlink_msg_range_sensor_raw_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.sender_idx , packet1.dist_raw );
 	mavlink_msg_range_sensor_raw_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -433,7 +433,7 @@ static void mavlink_test_range_sensor_raw(uint8_t system_id, uint8_t component_i
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_range_sensor_raw_send(MAVLINK_COMM_1 , packet1.sender_idx , packet1.distance );
+	mavlink_msg_range_sensor_raw_send(MAVLINK_COMM_1 , packet1.sender_idx , packet1.dist_raw );
 	mavlink_msg_range_sensor_raw_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
@@ -584,9 +584,9 @@ static void mavlink_test_skye(uint8_t system_id, uint8_t component_id, mavlink_m
 	mavlink_test_actuator_limits(system_id, component_id, last_msg);
 	mavlink_test_actuation_configuration(system_id, component_id, last_msg);
 	mavlink_test_actuation_status(system_id, component_id, last_msg);
-	mavlink_test_position_ctrl_output_raw(system_id, component_id, last_msg);
-	mavlink_test_attitude_ctrl_output_raw(system_id, component_id, last_msg);
-	mavlink_test_allocation_output_raw(system_id, component_id, last_msg);
+	mavlink_test_position_ctrl_output(system_id, component_id, last_msg);
+	mavlink_test_attitude_ctrl_output(system_id, component_id, last_msg);
+	mavlink_test_allocation_output(system_id, component_id, last_msg);
 	mavlink_test_actuation_feedback(system_id, component_id, last_msg);
 	mavlink_test_skye_feedback_combined(system_id, component_id, last_msg);
 	mavlink_test_range_sensor_raw(system_id, component_id, last_msg);
