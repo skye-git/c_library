@@ -547,7 +547,7 @@ static void mavlink_test_setpoint_12dof(uint8_t system_id, uint8_t component_id,
         memset(&packet1, 0, sizeof(packet1));
         	packet1.target_system = packet_in.target_system;
         
-        	mav_array_memcpy(packet1.value, packet_in.value, sizeof(float)*12);
+        	mav_array_memcpy(packet1.values, packet_in.values, sizeof(float)*12);
         
 
         memset(&packet2, 0, sizeof(packet2));
@@ -556,12 +556,12 @@ static void mavlink_test_setpoint_12dof(uint8_t system_id, uint8_t component_id,
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_setpoint_12dof_pack(system_id, component_id, &msg , packet1.target_system , packet1.value );
+	mavlink_msg_setpoint_12dof_pack(system_id, component_id, &msg , packet1.target_system , packet1.values );
 	mavlink_msg_setpoint_12dof_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_setpoint_12dof_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.value );
+	mavlink_msg_setpoint_12dof_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.target_system , packet1.values );
 	mavlink_msg_setpoint_12dof_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -574,7 +574,7 @@ static void mavlink_test_setpoint_12dof(uint8_t system_id, uint8_t component_id,
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_setpoint_12dof_send(MAVLINK_COMM_1 , packet1.target_system , packet1.value );
+	mavlink_msg_setpoint_12dof_send(MAVLINK_COMM_1 , packet1.target_system , packet1.values );
 	mavlink_msg_setpoint_12dof_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
