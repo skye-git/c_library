@@ -103,6 +103,7 @@ typedef enum MAV_CMD
 	MAV_CMD_VIDEO_STOP_CAPTURE=2501, /* Stop the current video capture |Reserved| Reserved|  */
 	MAV_CMD_PANORAMA_CREATE=2800, /* Create a panorama at the current position |Viewing angle horizontal of the panorama (in degrees, +- 0.5 the total angle)| Viewing angle vertical of panorama (in degrees)| Speed of the horizontal rotation (in degrees per second)| Speed of the vertical rotation (in degrees per second)|  */
 	MAV_CMD_SKYE_RESET_AU=10001, /* Request the reset of an actuation unit component (see MAV_COMP_ID_SERVO) |0: do nothing, 1: reset| Empty| Empty| Empty| Empty| Empty| Empty|  */
+	MAV_CMD_SET_SKYE_CONTROL_MODE=10002, /* Set Skye control mode parameter. TODO: Separate stabilisation from input interpretation |0: manual, 1: stab 5DOF, 2: stab 5DOF. See enum SKYE_CONTROL_MODE| Empty| Empty| Empty| Empty| Empty| Empty|  */
 	MAV_CMD_PAYLOAD_PREPARE_DEPLOY=30001, /* Deploy payload on a Lat / Lon / Alt position. This includes the navigation to reach the required release position and velocity. |Operation mode. 0: prepare single payload deploy (overwriting previous requests), but do not execute it. 1: execute payload deploy immediately (rejecting further deploy commands during execution, but allowing abort). 2: add payload deploy to existing deployment list.| Desired approach vector in degrees compass heading (0..360). A negative value indicates the system can define the approach vector at will.| Desired ground speed at release time. This can be overriden by the airframe in case it needs to meet minimum airspeed. A negative value indicates the system can define the ground speed at will.| Minimum altitude clearance to the release position in meters. A negative value indicates the system can define the clearance at will.| Latitude unscaled for MISSION_ITEM or in 1e7 degrees for MISSION_ITEM_INT| Longitude unscaled for MISSION_ITEM or in 1e7 degrees for MISSION_ITEM_INT| Altitude, in meters AMSL|  */
 	MAV_CMD_PAYLOAD_CONTROL_DEPLOY=30002, /* Control the payload deployment. |Operation mode. 0: Abort deployment, continue normal mission. 1: switch to payload deploment mode. 100: delete first payload deployment request. 101: delete all payload deployment requests.| Reserved| Reserved| Reserved| Reserved| Reserved| Reserved|  */
 	MAV_CMD_ENUM_END=30003, /*  | */
@@ -156,6 +157,19 @@ typedef enum BATTERY_STATUS_BITS
 	BATTERY_STATUS_BIT_ERROR=128, /* Battery error occured | */
 	BATTERY_STATUS_BITS_ENUM_END=129, /*  | */
 } BATTERY_STATUS_BITS;
+#endif
+
+/** @brief Defines interpretation of MAV_CMD_SET_SKYE_CONTROL_MODE message parameters. */
+#ifndef HAVE_ENUM_SKYE_CONTROL_MODE
+#define HAVE_ENUM_SKYE_CONTROL_MODE
+typedef enum SKYE_CONTROL_MODE
+{
+	SKYE_CONTROL_MODE_MANUAL=0, /* Direct control of resulting moment and force. No att/rate controller. | */
+	SKYE_CONTROL_MODE_5DOF=1, /* Attitude control. Rate input roll is blocked. | */
+	SKYE_CONTROL_MODE_6DOF=2, /* Attitude control. Rate inputs for all axis enabled. | */
+	SKYE_CONTROL_MODE_MAX=3, /*  | */
+	SKYE_CONTROL_MODE_ENUM_END=4, /*  | */
+} SKYE_CONTROL_MODE;
 #endif
 
 #include "../common/common.h"
