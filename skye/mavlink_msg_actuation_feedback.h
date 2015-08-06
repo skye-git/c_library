@@ -5,8 +5,8 @@
 typedef struct __mavlink_actuation_feedback_t
 {
  uint64_t timestamp; ///< Onboard time
- float thrust[6]; ///< Thrust estimate of actuation units in Newton
- float angle[6]; ///< Orientation readout of actuation units in Degree
+ float thrust[6]; ///< Thrust estimate of AUs [N]
+ float angle[6]; ///< Orientation readout of AUs [deg]
 } mavlink_actuation_feedback_t;
 
 #define MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN 56
@@ -35,8 +35,8 @@ typedef struct __mavlink_actuation_feedback_t
  * @param msg The MAVLink message to compress the data into
  *
  * @param timestamp Onboard time
- * @param thrust Thrust estimate of actuation units in Newton
- * @param angle Orientation readout of actuation units in Degree
+ * @param thrust Thrust estimate of AUs [N]
+ * @param angle Orientation readout of AUs [deg]
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_actuation_feedback_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
@@ -71,8 +71,8 @@ static inline uint16_t mavlink_msg_actuation_feedback_pack(uint8_t system_id, ui
  * @param chan The MAVLink channel this message will be sent over
  * @param msg The MAVLink message to compress the data into
  * @param timestamp Onboard time
- * @param thrust Thrust estimate of actuation units in Newton
- * @param angle Orientation readout of actuation units in Degree
+ * @param thrust Thrust estimate of AUs [N]
+ * @param angle Orientation readout of AUs [deg]
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_actuation_feedback_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
@@ -133,8 +133,8 @@ static inline uint16_t mavlink_msg_actuation_feedback_encode_chan(uint8_t system
  * @param chan MAVLink channel to send the message
  *
  * @param timestamp Onboard time
- * @param thrust Thrust estimate of actuation units in Newton
- * @param angle Orientation readout of actuation units in Degree
+ * @param thrust Thrust estimate of AUs [N]
+ * @param angle Orientation readout of AUs [deg]
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
@@ -215,7 +215,7 @@ static inline uint64_t mavlink_msg_actuation_feedback_get_timestamp(const mavlin
 /**
  * @brief Get field thrust from actuation_feedback message
  *
- * @return Thrust estimate of actuation units in Newton
+ * @return Thrust estimate of AUs [N]
  */
 static inline uint16_t mavlink_msg_actuation_feedback_get_thrust(const mavlink_message_t* msg, float *thrust)
 {
@@ -225,7 +225,7 @@ static inline uint16_t mavlink_msg_actuation_feedback_get_thrust(const mavlink_m
 /**
  * @brief Get field angle from actuation_feedback message
  *
- * @return Orientation readout of actuation units in Degree
+ * @return Orientation readout of AUs [deg]
  */
 static inline uint16_t mavlink_msg_actuation_feedback_get_angle(const mavlink_message_t* msg, float *angle)
 {

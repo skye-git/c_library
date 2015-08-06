@@ -4,24 +4,24 @@
 
 typedef struct __mavlink_allocation_output_t
 {
- int32_t pos[6]; ///< Orientation motor setpoint of AUs
- uint16_t thrust[6]; ///< Thrust motor setpoint of AUs
+ float angle[6]; ///< Orientation motor setpoint of AUs [deg]
+ float thrust[6]; ///< Thrust motor setpoint of AUs [N]
 } mavlink_allocation_output_t;
 
-#define MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN 36
-#define MAVLINK_MSG_ID_212_LEN 36
+#define MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN 48
+#define MAVLINK_MSG_ID_212_LEN 48
 
-#define MAVLINK_MSG_ID_ALLOCATION_OUTPUT_CRC 140
-#define MAVLINK_MSG_ID_212_CRC 140
+#define MAVLINK_MSG_ID_ALLOCATION_OUTPUT_CRC 233
+#define MAVLINK_MSG_ID_212_CRC 233
 
-#define MAVLINK_MSG_ALLOCATION_OUTPUT_FIELD_POS_LEN 6
+#define MAVLINK_MSG_ALLOCATION_OUTPUT_FIELD_ANGLE_LEN 6
 #define MAVLINK_MSG_ALLOCATION_OUTPUT_FIELD_THRUST_LEN 6
 
 #define MAVLINK_MESSAGE_INFO_ALLOCATION_OUTPUT { \
 	"ALLOCATION_OUTPUT", \
 	2, \
-	{  { "pos", NULL, MAVLINK_TYPE_INT32_T, 6, 0, offsetof(mavlink_allocation_output_t, pos) }, \
-         { "thrust", NULL, MAVLINK_TYPE_UINT16_T, 6, 24, offsetof(mavlink_allocation_output_t, thrust) }, \
+	{  { "angle", NULL, MAVLINK_TYPE_FLOAT, 6, 0, offsetof(mavlink_allocation_output_t, angle) }, \
+         { "thrust", NULL, MAVLINK_TYPE_FLOAT, 6, 24, offsetof(mavlink_allocation_output_t, thrust) }, \
          } \
 }
 
@@ -32,24 +32,24 @@ typedef struct __mavlink_allocation_output_t
  * @param component_id ID of this component (e.g. 200 for IMU)
  * @param msg The MAVLink message to compress the data into
  *
- * @param pos Orientation motor setpoint of AUs
- * @param thrust Thrust motor setpoint of AUs
+ * @param angle Orientation motor setpoint of AUs [deg]
+ * @param thrust Thrust motor setpoint of AUs [N]
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_allocation_output_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-						       const int32_t *pos, const uint16_t *thrust)
+						       const float *angle, const float *thrust)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	char buf[MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN];
 
-	_mav_put_int32_t_array(buf, 0, pos, 6);
-	_mav_put_uint16_t_array(buf, 24, thrust, 6);
+	_mav_put_float_array(buf, 0, angle, 6);
+	_mav_put_float_array(buf, 24, thrust, 6);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN);
 #else
 	mavlink_allocation_output_t packet;
 
-	mav_array_memcpy(packet.pos, pos, sizeof(int32_t)*6);
-	mav_array_memcpy(packet.thrust, thrust, sizeof(uint16_t)*6);
+	mav_array_memcpy(packet.angle, angle, sizeof(float)*6);
+	mav_array_memcpy(packet.thrust, thrust, sizeof(float)*6);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN);
 #endif
 
@@ -67,25 +67,25 @@ static inline uint16_t mavlink_msg_allocation_output_pack(uint8_t system_id, uin
  * @param component_id ID of this component (e.g. 200 for IMU)
  * @param chan The MAVLink channel this message will be sent over
  * @param msg The MAVLink message to compress the data into
- * @param pos Orientation motor setpoint of AUs
- * @param thrust Thrust motor setpoint of AUs
+ * @param angle Orientation motor setpoint of AUs [deg]
+ * @param thrust Thrust motor setpoint of AUs [N]
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_allocation_output_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
 							   mavlink_message_t* msg,
-						           const int32_t *pos,const uint16_t *thrust)
+						           const float *angle,const float *thrust)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	char buf[MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN];
 
-	_mav_put_int32_t_array(buf, 0, pos, 6);
-	_mav_put_uint16_t_array(buf, 24, thrust, 6);
+	_mav_put_float_array(buf, 0, angle, 6);
+	_mav_put_float_array(buf, 24, thrust, 6);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN);
 #else
 	mavlink_allocation_output_t packet;
 
-	mav_array_memcpy(packet.pos, pos, sizeof(int32_t)*6);
-	mav_array_memcpy(packet.thrust, thrust, sizeof(uint16_t)*6);
+	mav_array_memcpy(packet.angle, angle, sizeof(float)*6);
+	mav_array_memcpy(packet.thrust, thrust, sizeof(float)*6);
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN);
 #endif
 
@@ -107,7 +107,7 @@ static inline uint16_t mavlink_msg_allocation_output_pack_chan(uint8_t system_id
  */
 static inline uint16_t mavlink_msg_allocation_output_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_allocation_output_t* allocation_output)
 {
-	return mavlink_msg_allocation_output_pack(system_id, component_id, msg, allocation_output->pos, allocation_output->thrust);
+	return mavlink_msg_allocation_output_pack(system_id, component_id, msg, allocation_output->angle, allocation_output->thrust);
 }
 
 /**
@@ -121,25 +121,25 @@ static inline uint16_t mavlink_msg_allocation_output_encode(uint8_t system_id, u
  */
 static inline uint16_t mavlink_msg_allocation_output_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_allocation_output_t* allocation_output)
 {
-	return mavlink_msg_allocation_output_pack_chan(system_id, component_id, chan, msg, allocation_output->pos, allocation_output->thrust);
+	return mavlink_msg_allocation_output_pack_chan(system_id, component_id, chan, msg, allocation_output->angle, allocation_output->thrust);
 }
 
 /**
  * @brief Send a allocation_output message
  * @param chan MAVLink channel to send the message
  *
- * @param pos Orientation motor setpoint of AUs
- * @param thrust Thrust motor setpoint of AUs
+ * @param angle Orientation motor setpoint of AUs [deg]
+ * @param thrust Thrust motor setpoint of AUs [N]
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_allocation_output_send(mavlink_channel_t chan, const int32_t *pos, const uint16_t *thrust)
+static inline void mavlink_msg_allocation_output_send(mavlink_channel_t chan, const float *angle, const float *thrust)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	char buf[MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN];
 
-	_mav_put_int32_t_array(buf, 0, pos, 6);
-	_mav_put_uint16_t_array(buf, 24, thrust, 6);
+	_mav_put_float_array(buf, 0, angle, 6);
+	_mav_put_float_array(buf, 24, thrust, 6);
 #if MAVLINK_CRC_EXTRA
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ALLOCATION_OUTPUT, buf, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_CRC);
 #else
@@ -148,8 +148,8 @@ static inline void mavlink_msg_allocation_output_send(mavlink_channel_t chan, co
 #else
 	mavlink_allocation_output_t packet;
 
-	mav_array_memcpy(packet.pos, pos, sizeof(int32_t)*6);
-	mav_array_memcpy(packet.thrust, thrust, sizeof(uint16_t)*6);
+	mav_array_memcpy(packet.angle, angle, sizeof(float)*6);
+	mav_array_memcpy(packet.thrust, thrust, sizeof(float)*6);
 #if MAVLINK_CRC_EXTRA
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ALLOCATION_OUTPUT, (const char *)&packet, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_CRC);
 #else
@@ -166,13 +166,13 @@ static inline void mavlink_msg_allocation_output_send(mavlink_channel_t chan, co
   is usually the receive buffer for the channel, and allows a reply to an
   incoming message with minimum stack space usage.
  */
-static inline void mavlink_msg_allocation_output_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  const int32_t *pos, const uint16_t *thrust)
+static inline void mavlink_msg_allocation_output_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  const float *angle, const float *thrust)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	char *buf = (char *)msgbuf;
 
-	_mav_put_int32_t_array(buf, 0, pos, 6);
-	_mav_put_uint16_t_array(buf, 24, thrust, 6);
+	_mav_put_float_array(buf, 0, angle, 6);
+	_mav_put_float_array(buf, 24, thrust, 6);
 #if MAVLINK_CRC_EXTRA
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ALLOCATION_OUTPUT, buf, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_CRC);
 #else
@@ -181,8 +181,8 @@ static inline void mavlink_msg_allocation_output_send_buf(mavlink_message_t *msg
 #else
 	mavlink_allocation_output_t *packet = (mavlink_allocation_output_t *)msgbuf;
 
-	mav_array_memcpy(packet->pos, pos, sizeof(int32_t)*6);
-	mav_array_memcpy(packet->thrust, thrust, sizeof(uint16_t)*6);
+	mav_array_memcpy(packet->angle, angle, sizeof(float)*6);
+	mav_array_memcpy(packet->thrust, thrust, sizeof(float)*6);
 #if MAVLINK_CRC_EXTRA
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ALLOCATION_OUTPUT, (const char *)packet, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_CRC);
 #else
@@ -198,23 +198,23 @@ static inline void mavlink_msg_allocation_output_send_buf(mavlink_message_t *msg
 
 
 /**
- * @brief Get field pos from allocation_output message
+ * @brief Get field angle from allocation_output message
  *
- * @return Orientation motor setpoint of AUs
+ * @return Orientation motor setpoint of AUs [deg]
  */
-static inline uint16_t mavlink_msg_allocation_output_get_pos(const mavlink_message_t* msg, int32_t *pos)
+static inline uint16_t mavlink_msg_allocation_output_get_angle(const mavlink_message_t* msg, float *angle)
 {
-	return _MAV_RETURN_int32_t_array(msg, pos, 6,  0);
+	return _MAV_RETURN_float_array(msg, angle, 6,  0);
 }
 
 /**
  * @brief Get field thrust from allocation_output message
  *
- * @return Thrust motor setpoint of AUs
+ * @return Thrust motor setpoint of AUs [N]
  */
-static inline uint16_t mavlink_msg_allocation_output_get_thrust(const mavlink_message_t* msg, uint16_t *thrust)
+static inline uint16_t mavlink_msg_allocation_output_get_thrust(const mavlink_message_t* msg, float *thrust)
 {
-	return _MAV_RETURN_uint16_t_array(msg, thrust, 6,  24);
+	return _MAV_RETURN_float_array(msg, thrust, 6,  24);
 }
 
 /**
@@ -226,7 +226,7 @@ static inline uint16_t mavlink_msg_allocation_output_get_thrust(const mavlink_me
 static inline void mavlink_msg_allocation_output_decode(const mavlink_message_t* msg, mavlink_allocation_output_t* allocation_output)
 {
 #if MAVLINK_NEED_BYTE_SWAP
-	mavlink_msg_allocation_output_get_pos(msg, allocation_output->pos);
+	mavlink_msg_allocation_output_get_angle(msg, allocation_output->angle);
 	mavlink_msg_allocation_output_get_thrust(msg, allocation_output->thrust);
 #else
 	memcpy(allocation_output, _MAV_PAYLOAD(msg), MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN);

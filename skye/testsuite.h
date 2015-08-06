@@ -261,13 +261,13 @@ static void mavlink_test_allocation_output(uint8_t system_id, uint8_t component_
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
 	mavlink_allocation_output_t packet_in = {
-		{ 963497464, 963497465, 963497466, 963497467, 963497468, 963497469 },{ 18483, 18484, 18485, 18486, 18487, 18488 }
+		{ 17.0, 18.0, 19.0, 20.0, 21.0, 22.0 },{ 185.0, 186.0, 187.0, 188.0, 189.0, 190.0 }
     };
 	mavlink_allocation_output_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
         
-        	mav_array_memcpy(packet1.pos, packet_in.pos, sizeof(int32_t)*6);
-        	mav_array_memcpy(packet1.thrust, packet_in.thrust, sizeof(uint16_t)*6);
+        	mav_array_memcpy(packet1.angle, packet_in.angle, sizeof(float)*6);
+        	mav_array_memcpy(packet1.thrust, packet_in.thrust, sizeof(float)*6);
         
 
         memset(&packet2, 0, sizeof(packet2));
@@ -276,12 +276,12 @@ static void mavlink_test_allocation_output(uint8_t system_id, uint8_t component_
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_allocation_output_pack(system_id, component_id, &msg , packet1.pos , packet1.thrust );
+	mavlink_msg_allocation_output_pack(system_id, component_id, &msg , packet1.angle , packet1.thrust );
 	mavlink_msg_allocation_output_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_allocation_output_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.pos , packet1.thrust );
+	mavlink_msg_allocation_output_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.angle , packet1.thrust );
 	mavlink_msg_allocation_output_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -294,7 +294,7 @@ static void mavlink_test_allocation_output(uint8_t system_id, uint8_t component_
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_allocation_output_send(MAVLINK_COMM_1 , packet1.pos , packet1.thrust );
+	mavlink_msg_allocation_output_send(MAVLINK_COMM_1 , packet1.angle , packet1.thrust );
 	mavlink_msg_allocation_output_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
