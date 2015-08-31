@@ -167,8 +167,9 @@ typedef enum SKYE_CONTROL_MODE
 	SKYE_CONTROL_MODE_MANUAL=0, /* Direct control of resulting moment and force. No att/rate controller. | */
 	SKYE_CONTROL_MODE_5DOF=1, /* Attitude control. Rate input roll is blocked. | */
 	SKYE_CONTROL_MODE_6DOF=2, /* Attitude control. Rate inputs for all axis enabled. | */
-	SKYE_CONTROL_MODE_MAX=3, /*  | */
-	SKYE_CONTROL_MODE_ENUM_END=4, /*  | */
+	SKYE_CONTROL_MODE_6DOFI=3, /* Attitude control. Rate inputs for all axis enabled in I-frame. | */
+	SKYE_CONTROL_MODE_MAX=4, /*  | */
+	SKYE_CONTROL_MODE_ENUM_END=5, /*  | */
 } SKYE_CONTROL_MODE;
 #endif
 
