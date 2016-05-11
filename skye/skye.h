@@ -178,8 +178,8 @@ typedef enum SKYE_CONTROL_MODE
 #define HAVE_ENUM_SKYE_C_MOD_POS
 typedef enum SKYE_C_MOD_POS
 {
-	MANUAL=0, /* Direct control of resulting force. No position/velocity controller. | */
-	CASCADE_PID=1, /* Cascade controller. | */
+	POS_MANUAL=0, /* Direct control of resulting force. No position/velocity controller. | */
+	POS_CASCADE_PID=1, /* Cascade controller. | */
 	SKYE_C_MOD_POS_ENUM_END=2, /*  | */
 } SKYE_C_MOD_POS;
 #endif
@@ -189,10 +189,10 @@ typedef enum SKYE_C_MOD_POS
 #define HAVE_ENUM_SKYE_C_MOD_ATT
 typedef enum SKYE_C_MOD_ATT
 {
-	MANUAL=0, /* Direct control of resulting moment. No att/rate controller. | */
-	DOF_5=1, /* Attitude control. Rate input roll is blocked. | */
-	DOF_6=2, /* Attitude control. Rate inputs for all axis enabled. | */
-	DOF_6_I=3, /* Attitude control. Rate inputs for all axis enabled in I-frame. | */
+	ATT_MANUAL=0, /* Direct control of resulting moment. No att/rate controller. | */
+	ATT_5_DOF=1, /* Attitude control. Rate input roll is blocked. | */
+	ATT_6_DOF=2, /* Attitude control. Rate inputs for all axis enabled. | */
+	ATT_6_DOFI=3, /* Attitude control. Rate inputs for all axis enabled in I-frame. | */
 	MAX=4, /*  | */
 	SKYE_C_MOD_ATT_ENUM_END=5, /*  | */
 } SKYE_C_MOD_ATT;
