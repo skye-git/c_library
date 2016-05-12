@@ -174,28 +174,28 @@ typedef enum SKYE_CONTROL_MODE
 #endif
 
 /** @brief Position controller modes. */
-#ifndef HAVE_ENUM_SKYE_C_MOD_POS
-#define HAVE_ENUM_SKYE_C_MOD_POS
-typedef enum SKYE_C_MOD_POS
+#ifndef HAVE_ENUM_SKYE_POS_C_MOD
+#define HAVE_ENUM_SKYE_POS_C_MOD
+typedef enum SKYE_POS_C_MOD
 {
-	POS_MANUAL=0, /* Direct control of resulting force. No position/velocity controller. | */
-	POS_CASCADE_PID=1, /* Cascade controller. | */
-	SKYE_C_MOD_POS_ENUM_END=2, /*  | */
-} SKYE_C_MOD_POS;
+	SKYE_POS_C_MOD_MANUAL=0, /* Direct control of resulting force. No position/velocity controller. | */
+	SKYE_POS_C_MOD_CASCADE_PID=1, /* Cascade controller. | */
+	SKYE_POS_C_MOD_ENUM_END=2, /*  | */
+} SKYE_POS_C_MOD;
 #endif
 
 /** @brief Attitude controller modes. */
-#ifndef HAVE_ENUM_SKYE_C_MOD_ATT
-#define HAVE_ENUM_SKYE_C_MOD_ATT
-typedef enum SKYE_C_MOD_ATT
+#ifndef HAVE_ENUM_SKYE_ATT_C_MOD
+#define HAVE_ENUM_SKYE_ATT_C_MOD
+typedef enum SKYE_ATT_C_MOD
 {
-	ATT_MANUAL=0, /* Direct control of resulting moment. No att/rate controller. | */
-	ATT_5_DOF=1, /* Attitude control. Rate input roll is blocked. | */
-	ATT_6_DOF=2, /* Attitude control. Rate inputs for all axis enabled. | */
-	ATT_6_DOFI=3, /* Attitude control. Rate inputs for all axis enabled in I-frame. | */
-	MAX=4, /*  | */
-	SKYE_C_MOD_ATT_ENUM_END=5, /*  | */
-} SKYE_C_MOD_ATT;
+	SKYE_ATT_C_MOD_MANUAL=0, /* Direct control of resulting moment. No att/rate controller. | */
+	SKYE_ATT_C_MOD_5_DOF=1, /* Attitude control. Rate input roll is blocked. | */
+	SKYE_ATT_C_MOD_6_DOF=2, /* Attitude control. Rate inputs for all axis enabled. | */
+	SKYE_ATT_C_MOD_6_DOFI=3, /* Attitude control. Rate inputs for all axis enabled in I-frame. | */
+	SKYE_ATT_C_MOD_MAX=4, /*  | */
+	SKYE_ATT_C_MOD_ENUM_END=5, /*  | */
+} SKYE_ATT_C_MOD;
 #endif
 
 #include "../common/common.h"
