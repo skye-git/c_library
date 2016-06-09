@@ -4,8 +4,8 @@
 
 typedef struct __mavlink_setpoint_12dof_t
 {
- float values[12]; ///< Input vector
- uint8_t target_system; ///< System ID
+ float values[12]; /*< Input vector*/
+ uint8_t target_system; /*< System ID*/
 } mavlink_setpoint_12dof_t;
 
 #define MAVLINK_MSG_ID_SETPOINT_12DOF_LEN 49

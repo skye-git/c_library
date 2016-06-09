@@ -4,12 +4,12 @@
 
 typedef struct __mavlink_actuation_configuration_t
 {
- float quat_au1[4]; ///< Quaternion q_BM that describes rotation of AU 1 towards UAV
- float quat_au2[4]; ///< Quaternion q_BM that describes rotation of AU 2 towards UAV
- float quat_au3[4]; ///< Quaternion q_BM that describes rotation of AU 3 towards UAV
- float quat_au4[4]; ///< Quaternion q_BM that describes rotation of AU 4 towards UAV
- float quat_au5[4]; ///< Quaternion q_BM that describes rotation of AU 5 towards UAV
- float quat_au6[4]; ///< Quaternion q_BM that describes rotation of AU 6 towards UAV
+ float quat_au1[4]; /*< Quaternion q_BM that describes rotation of AU 1 towards UAV*/
+ float quat_au2[4]; /*< Quaternion q_BM that describes rotation of AU 2 towards UAV*/
+ float quat_au3[4]; /*< Quaternion q_BM that describes rotation of AU 3 towards UAV*/
+ float quat_au4[4]; /*< Quaternion q_BM that describes rotation of AU 4 towards UAV*/
+ float quat_au5[4]; /*< Quaternion q_BM that describes rotation of AU 5 towards UAV*/
+ float quat_au6[4]; /*< Quaternion q_BM that describes rotation of AU 6 towards UAV*/
 } mavlink_actuation_configuration_t;
 
 #define MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN 96

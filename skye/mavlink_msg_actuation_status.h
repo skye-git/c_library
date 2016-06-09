@@ -4,8 +4,8 @@
 
 typedef struct __mavlink_actuation_status_t
 {
- uint8_t au_id; ///< a ID
- int8_t status; ///< -1: unknown, 0: detached:, 1: init, 2: homing, 3: ready, 4: disabled, 5: error
+ uint8_t au_id; /*< a ID*/
+ int8_t status; /*< -1: unknown, 0: detached:, 1: init, 2: homing, 3: ready, 4: disabled, 5: error*/
 } mavlink_actuation_status_t;
 
 #define MAVLINK_MSG_ID_ACTUATION_STATUS_LEN 2

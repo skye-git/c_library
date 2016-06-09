@@ -4,9 +4,9 @@
 
 typedef struct __mavlink_attitude_ctrl_output_t
 {
- float M_x; ///< Moment around x axis [Nm]
- float M_y; ///< Moment around y axis [Nm]
- float M_z; ///< Moment around z axis [Nm]
+ float M_x; /*< Moment around x axis [Nm]*/
+ float M_y; /*< Moment around y axis [Nm]*/
+ float M_z; /*< Moment around z axis [Nm]*/
 } mavlink_attitude_ctrl_output_t;
 
 #define MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN 12

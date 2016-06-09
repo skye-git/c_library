@@ -4,10 +4,10 @@
 
 typedef struct __mavlink_skye_debug_vec3_t
 {
- uint64_t timestamp; ///< Unix time
- float x; ///< X
- float y; ///< Y
- float z; ///< Z
+ uint64_t timestamp; /*< Unix time*/
+ float x; /*< X*/
+ float y; /*< Y*/
+ float z; /*< Z*/
 } mavlink_skye_debug_vec3_t;
 
 #define MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN 20

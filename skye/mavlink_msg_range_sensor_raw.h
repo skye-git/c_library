@@ -4,8 +4,8 @@
 
 typedef struct __mavlink_range_sensor_raw_t
 {
- float dist_raw[6]; ///< Distances to receiver modules
- uint8_t sender_idx; ///< Sender module index
+ float dist_raw[6]; /*< Distances to receiver modules*/
+ uint8_t sender_idx; /*< Sender module index*/
 } mavlink_range_sensor_raw_t;
 
 #define MAVLINK_MSG_ID_RANGE_SENSOR_RAW_LEN 25

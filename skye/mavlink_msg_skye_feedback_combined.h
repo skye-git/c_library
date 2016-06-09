@@ -4,14 +4,14 @@
 
 typedef struct __mavlink_skye_feedback_combined_t
 {
- uint64_t timestamp; ///< Onboard time
- float omega_raw[3]; ///< Raw angular velocity. IMU frame. rad/sec
- float accel_raw[3]; ///< Raw acceleration. IMU frame. m/s2
- float alpha_ekf[3]; ///< Filtered angular acceleration. IMU frame. rad/sec
- float omega_ekf[3]; ///< Filtered angular velocity. IMU frame. rad/sec
- float quat_ekf[4]; ///< Filtered Orientation. IMU frame. rad/sec
- float thrust[6]; ///< Thrust estimate of actuation units in Newton
- float angle[6]; ///< Orientation readout of actuation units in Degree
+ uint64_t timestamp; /*< Onboard time*/
+ float omega_raw[3]; /*< Raw angular velocity. IMU frame. rad/sec*/
+ float accel_raw[3]; /*< Raw acceleration. IMU frame. m/s2*/
+ float alpha_ekf[3]; /*< Filtered angular acceleration. IMU frame. rad/sec*/
+ float omega_ekf[3]; /*< Filtered angular velocity. IMU frame. rad/sec*/
+ float quat_ekf[4]; /*< Filtered Orientation. IMU frame. rad/sec*/
+ float thrust[6]; /*< Thrust estimate of actuation units in Newton*/
+ float angle[6]; /*< Orientation readout of actuation units in Degree*/
 } mavlink_skye_feedback_combined_t;
 
 #define MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN 120

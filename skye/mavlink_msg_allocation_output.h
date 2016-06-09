@@ -4,8 +4,8 @@
 
 typedef struct __mavlink_allocation_output_t
 {
- float angle[6]; ///< Orientation motor setpoint of AUs [deg]
- float thrust[6]; ///< Thrust motor setpoint of AUs [N]
+ float angle[6]; /*< Orientation motor setpoint of AUs [deg]*/
+ float thrust[6]; /*< Thrust motor setpoint of AUs [N]*/
 } mavlink_allocation_output_t;
 
 #define MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN 48

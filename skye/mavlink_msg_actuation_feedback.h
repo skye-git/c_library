@@ -4,9 +4,9 @@
 
 typedef struct __mavlink_actuation_feedback_t
 {
- uint64_t timestamp; ///< Onboard time
- float thrust[6]; ///< Thrust estimate of AUs [N]
- float angle[6]; ///< Orientation readout of AUs [deg]
+ uint64_t timestamp; /*< Onboard time*/
+ float thrust[6]; /*< Thrust estimate of AUs [N]*/
+ float angle[6]; /*< Orientation readout of AUs [deg]*/
 } mavlink_actuation_feedback_t;
 
 #define MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN 56

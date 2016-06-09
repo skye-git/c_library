@@ -4,13 +4,13 @@
 
 typedef struct __mavlink_setpoint_6dof_t
 {
- float trans_x; ///< Translational Component in x
- float trans_y; ///< Translational Component in y
- float trans_z; ///< Translational Component in z
- float rot_x; ///< Rotational Component in x
- float rot_y; ///< Rotational Component in y
- float rot_z; ///< Rotational Component in z
- uint8_t target_system; ///< System ID
+ float trans_x; /*< Translational Component in x*/
+ float trans_y; /*< Translational Component in y*/
+ float trans_z; /*< Translational Component in z*/
+ float rot_x; /*< Rotational Component in x*/
+ float rot_y; /*< Rotational Component in y*/
+ float rot_z; /*< Rotational Component in z*/
+ uint8_t target_system; /*< System ID*/
 } mavlink_setpoint_6dof_t;
 
 #define MAVLINK_MSG_ID_SETPOINT_6DOF_LEN 25

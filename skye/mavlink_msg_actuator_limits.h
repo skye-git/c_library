@@ -4,13 +4,13 @@
 
 typedef struct __mavlink_actuator_limits_t
 {
- uint64_t timestamp; ///< Onboard time
- float th_min[6]; ///< Minimum thrust of actuators
- float th_start[6]; ///< Start thrust of actuators
- float th_max[6]; ///< Maximum thrust of actuators
- float ang_min[6]; ///< Minimum angle of actuators
- float ang_max[6]; ///< Maximum angle of actuators
- uint8_t valid[6]; ///< Tells wether data is valid
+ uint64_t timestamp; /*< Onboard time*/
+ float th_min[6]; /*< Minimum thrust of actuators*/
+ float th_start[6]; /*< Start thrust of actuators*/
+ float th_max[6]; /*< Maximum thrust of actuators*/
+ float ang_min[6]; /*< Minimum angle of actuators*/
+ float ang_max[6]; /*< Maximum angle of actuators*/
+ uint8_t valid[6]; /*< Tells wether data is valid*/
 } mavlink_actuator_limits_t;
 
 #define MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN 134

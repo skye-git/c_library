@@ -4,14 +4,14 @@
 
 typedef struct __mavlink_skye_attitude_hil_t
 {
- uint64_t timestamp; ///< Unix time
- float roll; ///< Roll angle (rad, Tait-Bryan, NED)
- float pitch; ///< Pitch angle (rad, Tait-Bryan, NED)
- float yaw; ///< Yaw angle (rad, Tait-Bryan, NED)
- float rollspeed; ///< Roll body angular rate (rad/s, x forward/y right/z down)
- float pitchspeed; ///< Pitch body angular rate (rad/s, x forward/y right/z down)
- float yawspeed; ///< Yaw body angular rate (rad/s, x forward/y right/z down)
- float q[4]; ///< Quaternion (NED)
+ uint64_t timestamp; /*< Unix time*/
+ float roll; /*< Roll angle (rad, Tait-Bryan, NED)*/
+ float pitch; /*< Pitch angle (rad, Tait-Bryan, NED)*/
+ float yaw; /*< Yaw angle (rad, Tait-Bryan, NED)*/
+ float rollspeed; /*< Roll body angular rate (rad/s, x forward/y right/z down)*/
+ float pitchspeed; /*< Pitch body angular rate (rad/s, x forward/y right/z down)*/
+ float yawspeed; /*< Yaw body angular rate (rad/s, x forward/y right/z down)*/
+ float q[4]; /*< Quaternion (NED)*/
 } mavlink_skye_attitude_hil_t;
 
 #define MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN 48

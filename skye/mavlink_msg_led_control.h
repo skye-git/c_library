@@ -4,12 +4,12 @@
 
 typedef struct __mavlink_led_control_t
 {
- float frequency; ///< Frequency parameter, Hz
- uint8_t led_id; ///< Led ID
- uint8_t red; ///< Red color component for 24bit color
- uint8_t green; ///< Red color component for 24bit color
- uint8_t blue; ///< Red color component for 24bit color
- uint8_t mode; ///< Compare LED_CONTROL_MODE enumerator - 0: Constant light, 1: Blink on/off, 2: Pulsate, 3: Colorloop, 4: Disco, 5: power, 6: speed, 7: rotation
+ float frequency; /*< Frequency parameter, Hz*/
+ uint8_t led_id; /*< Led ID*/
+ uint8_t red; /*< Red color component for 24bit color*/
+ uint8_t green; /*< Red color component for 24bit color*/
+ uint8_t blue; /*< Red color component for 24bit color*/
+ uint8_t mode; /*< Compare LED_CONTROL_MODE enumerator - 0: Constant light, 1: Blink on/off, 2: Pulsate, 3: Colorloop, 4: Disco, 5: power, 6: speed, 7: rotation*/
 } mavlink_led_control_t;
 
 #define MAVLINK_MSG_ID_LED_CONTROL_LEN 9

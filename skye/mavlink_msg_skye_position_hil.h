@@ -4,13 +4,13 @@
 
 typedef struct __mavlink_skye_position_hil_t
 {
- uint64_t timestamp; ///< Unix time
- float x; ///< Local North position
- float y; ///< Local East position
- float z; ///< Local Down position
- float vx; ///< Local North velocity
- float vy; ///< Local East velocity
- float vz; ///< Local Down velocity
+ uint64_t timestamp; /*< Unix time*/
+ float x; /*< Local North position*/
+ float y; /*< Local East position*/
+ float z; /*< Local Down position*/
+ float vx; /*< Local North velocity*/
+ float vy; /*< Local East velocity*/
+ float vz; /*< Local Down velocity*/
 } mavlink_skye_position_hil_t;
 
 #define MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN 32

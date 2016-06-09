@@ -4,9 +4,9 @@
 
 typedef struct __mavlink_position_ctrl_output_t
 {
- float F_x; ///< Force in x axis [N]
- float F_y; ///< Force in y axis [N]
- float F_z; ///< Force in z axis [N]
+ float F_x; /*< Force in x axis [N]*/
+ float F_y; /*< Force in y axis [N]*/
+ float F_z; /*< Force in z axis [N]*/
 } mavlink_position_ctrl_output_t;
 
 #define MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN 12
