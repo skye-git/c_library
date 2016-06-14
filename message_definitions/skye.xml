@@ -199,9 +199,11 @@
 		<field type="float" name="M_z">Moment around z axis [Nm]</field>
 	</message>
 	<message id="212" name="ALLOCATION_OUTPUT">
-		<description>Raw allocation sensor values for up to 6 AUs</description>
+		<description>Allocation app output values for up to 6 AUs</description>
 		<field type="float[6]" name="angle">Orientation motor setpoint of AUs [deg]</field>
 		<field type="float[6]" name="thrust">Thrust motor setpoint of AUs [N]</field>
+		<field type="float[6]" name="angle_valid">Indicates if angle field is valid</field>
+		<field type="float[6]" name="thrust_valid">Indicate if thrust field is valid</field>
 	</message>
 	<message id="213" name="ACTUATION_FEEDBACK">
 		<description>Actuation feedback for up to 6 actuation units</description>
@@ -224,6 +226,13 @@
 		<description>Raw distance measurements from sender to receiver modules (nanotron)</description>
 		<field type="uint8_t" name="sender_idx">Sender module index</field>
 		<field type="float[6]" name="dist_raw">Distances to receiver modules</field>
+	</message>
+	<message id="216" name="ALLOCATION_SENSOR">
+		<description>Raw allocation sensor values for up to 6 AUs</description>
+		<field type="float[6]" name="angle">Orientation motor of AUs [deg]</field>
+		<field type="float[6]" name="thrust">Thrust motor of AUs [N]</field>
+		<field type="float[6]" name="angle_valid">Indicates if angle field is valid</field>
+		<field type="float[6]" name="thrust_valid">Indicate if thrust field is valid</field>
 	</message>
 	<!-- messages 220-229 for skye input messages -->
 	<message id="220" name="LED_CONTROL">

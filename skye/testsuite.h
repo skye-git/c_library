@@ -261,13 +261,15 @@ static void mavlink_test_allocation_output(uint8_t system_id, uint8_t component_
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
 	mavlink_allocation_output_t packet_in = {
-		{ 17.0, 18.0, 19.0, 20.0, 21.0, 22.0 },{ 185.0, 186.0, 187.0, 188.0, 189.0, 190.0 }
+		{ 17.0, 18.0, 19.0, 20.0, 21.0, 22.0 },{ 185.0, 186.0, 187.0, 188.0, 189.0, 190.0 },{ 353.0, 354.0, 355.0, 356.0, 357.0, 358.0 },{ 521.0, 522.0, 523.0, 524.0, 525.0, 526.0 }
     };
 	mavlink_allocation_output_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
         
         	mav_array_memcpy(packet1.angle, packet_in.angle, sizeof(float)*6);
         	mav_array_memcpy(packet1.thrust, packet_in.thrust, sizeof(float)*6);
+        	mav_array_memcpy(packet1.angle_valid, packet_in.angle_valid, sizeof(float)*6);
+        	mav_array_memcpy(packet1.thrust_valid, packet_in.thrust_valid, sizeof(float)*6);
         
 
         memset(&packet2, 0, sizeof(packet2));
@@ -276,12 +278,12 @@ static void mavlink_test_allocation_output(uint8_t system_id, uint8_t component_
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_allocation_output_pack(system_id, component_id, &msg , packet1.angle , packet1.thrust );
+	mavlink_msg_allocation_output_pack(system_id, component_id, &msg , packet1.angle , packet1.thrust , packet1.angle_valid , packet1.thrust_valid );
 	mavlink_msg_allocation_output_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_allocation_output_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.angle , packet1.thrust );
+	mavlink_msg_allocation_output_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.angle , packet1.thrust , packet1.angle_valid , packet1.thrust_valid );
 	mavlink_msg_allocation_output_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -294,7 +296,7 @@ static void mavlink_test_allocation_output(uint8_t system_id, uint8_t component_
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_allocation_output_send(MAVLINK_COMM_1 , packet1.angle , packet1.thrust );
+	mavlink_msg_allocation_output_send(MAVLINK_COMM_1 , packet1.angle , packet1.thrust , packet1.angle_valid , packet1.thrust_valid );
 	mavlink_msg_allocation_output_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
@@ -435,6 +437,52 @@ static void mavlink_test_range_sensor_raw(uint8_t system_id, uint8_t component_i
         memset(&packet2, 0, sizeof(packet2));
 	mavlink_msg_range_sensor_raw_send(MAVLINK_COMM_1 , packet1.sender_idx , packet1.dist_raw );
 	mavlink_msg_range_sensor_raw_decode(last_msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+}
+
+static void mavlink_test_allocation_sensor(uint8_t system_id, uint8_t component_id, mavlink_message_t *last_msg)
+{
+	mavlink_message_t msg;
+        uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
+        uint16_t i;
+	mavlink_allocation_sensor_t packet_in = {
+		{ 17.0, 18.0, 19.0, 20.0, 21.0, 22.0 },{ 185.0, 186.0, 187.0, 188.0, 189.0, 190.0 },{ 353.0, 354.0, 355.0, 356.0, 357.0, 358.0 },{ 521.0, 522.0, 523.0, 524.0, 525.0, 526.0 }
+    };
+	mavlink_allocation_sensor_t packet1, packet2;
+        memset(&packet1, 0, sizeof(packet1));
+        
+        	mav_array_memcpy(packet1.angle, packet_in.angle, sizeof(float)*6);
+        	mav_array_memcpy(packet1.thrust, packet_in.thrust, sizeof(float)*6);
+        	mav_array_memcpy(packet1.angle_valid, packet_in.angle_valid, sizeof(float)*6);
+        	mav_array_memcpy(packet1.thrust_valid, packet_in.thrust_valid, sizeof(float)*6);
+        
+
+        memset(&packet2, 0, sizeof(packet2));
+	mavlink_msg_allocation_sensor_encode(system_id, component_id, &msg, &packet1);
+	mavlink_msg_allocation_sensor_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+	mavlink_msg_allocation_sensor_pack(system_id, component_id, &msg , packet1.angle , packet1.thrust , packet1.angle_valid , packet1.thrust_valid );
+	mavlink_msg_allocation_sensor_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+	mavlink_msg_allocation_sensor_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.angle , packet1.thrust , packet1.angle_valid , packet1.thrust_valid );
+	mavlink_msg_allocation_sensor_decode(&msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+
+        memset(&packet2, 0, sizeof(packet2));
+        mavlink_msg_to_send_buffer(buffer, &msg);
+        for (i=0; i<mavlink_msg_get_send_buffer_length(&msg); i++) {
+        	comm_send_ch(MAVLINK_COMM_0, buffer[i]);
+        }
+	mavlink_msg_allocation_sensor_decode(last_msg, &packet2);
+        MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
+        
+        memset(&packet2, 0, sizeof(packet2));
+	mavlink_msg_allocation_sensor_send(MAVLINK_COMM_1 , packet1.angle , packet1.thrust , packet1.angle_valid , packet1.thrust_valid );
+	mavlink_msg_allocation_sensor_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
 
@@ -735,6 +783,7 @@ static void mavlink_test_skye(uint8_t system_id, uint8_t component_id, mavlink_m
 	mavlink_test_actuation_feedback(system_id, component_id, last_msg);
 	mavlink_test_skye_feedback_combined(system_id, component_id, last_msg);
 	mavlink_test_range_sensor_raw(system_id, component_id, last_msg);
+	mavlink_test_allocation_sensor(system_id, component_id, last_msg);
 	mavlink_test_led_control(system_id, component_id, last_msg);
 	mavlink_test_setpoint_6dof(system_id, component_id, last_msg);
 	mavlink_test_setpoint_12dof(system_id, component_id, last_msg);
