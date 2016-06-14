@@ -2,21 +2,34 @@
 
 #define MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT 210
 
-typedef struct __mavlink_position_ctrl_output_t
+typedef struct MAVLINK_PACKED __mavlink_position_ctrl_output_t
 {
- float F_x; ///< Force in x axis [N]
- float F_y; ///< Force in y axis [N]
- float F_z; ///< Force in z axis [N]
+ float F_x; /*< Force in x axis [N]*/
+ float F_y; /*< Force in y axis [N]*/
+ float F_z; /*< Force in z axis [N]*/
 } mavlink_position_ctrl_output_t;
 
 #define MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN 12
+#define MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_MIN_LEN 12
 #define MAVLINK_MSG_ID_210_LEN 12
+#define MAVLINK_MSG_ID_210_MIN_LEN 12
 
 #define MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_CRC 148
 #define MAVLINK_MSG_ID_210_CRC 148
 
 
 
+#if MAVLINK_COMMAND_24BIT
+#define MAVLINK_MESSAGE_INFO_POSITION_CTRL_OUTPUT { \
+	210, \
+	"POSITION_CTRL_OUTPUT", \
+	3, \
+	{  { "F_x", NULL, MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_position_ctrl_output_t, F_x) }, \
+         { "F_y", NULL, MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_position_ctrl_output_t, F_y) }, \
+         { "F_z", NULL, MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_position_ctrl_output_t, F_z) }, \
+         } \
+}
+#else
 #define MAVLINK_MESSAGE_INFO_POSITION_CTRL_OUTPUT { \
 	"POSITION_CTRL_OUTPUT", \
 	3, \
@@ -25,7 +38,7 @@ typedef struct __mavlink_position_ctrl_output_t
          { "F_z", NULL, MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_position_ctrl_output_t, F_z) }, \
          } \
 }
-
+#endif
 
 /**
  * @brief Pack a position_ctrl_output message
@@ -58,11 +71,7 @@ static inline uint16_t mavlink_msg_position_ctrl_output_pack(uint8_t system_id, 
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT;
-#if MAVLINK_CRC_EXTRA
-    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_CRC);
-#else
-    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN);
-#endif
+    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_MIN_LEN, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_CRC);
 }
 
 /**
@@ -97,11 +106,7 @@ static inline uint16_t mavlink_msg_position_ctrl_output_pack_chan(uint8_t system
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT;
-#if MAVLINK_CRC_EXTRA
-    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_CRC);
-#else
-    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN);
-#endif
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_MIN_LEN, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_CRC);
 }
 
 /**
@@ -149,22 +154,28 @@ static inline void mavlink_msg_position_ctrl_output_send(mavlink_channel_t chan,
 	_mav_put_float(buf, 4, F_y);
 	_mav_put_float(buf, 8, F_z);
 
-#if MAVLINK_CRC_EXTRA
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT, buf, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_CRC);
-#else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT, buf, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN);
-#endif
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT, buf, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_MIN_LEN, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_CRC);
 #else
 	mavlink_position_ctrl_output_t packet;
 	packet.F_x = F_x;
 	packet.F_y = F_y;
 	packet.F_z = F_z;
 
-#if MAVLINK_CRC_EXTRA
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT, (const char *)&packet, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_CRC);
-#else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT, (const char *)&packet, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN);
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT, (const char *)&packet, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_MIN_LEN, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_CRC);
 #endif
+}
+
+/**
+ * @brief Send a position_ctrl_output message
+ * @param chan MAVLink channel to send the message
+ * @param struct The MAVLink struct to serialize
+ */
+static inline void mavlink_msg_position_ctrl_output_send_struct(mavlink_channel_t chan, const mavlink_position_ctrl_output_t* position_ctrl_output)
+{
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+    mavlink_msg_position_ctrl_output_send(chan, position_ctrl_output->F_x, position_ctrl_output->F_y, position_ctrl_output->F_z);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT, (const char *)position_ctrl_output, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_MIN_LEN, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_CRC);
 #endif
 }
 
@@ -184,22 +195,14 @@ static inline void mavlink_msg_position_ctrl_output_send_buf(mavlink_message_t *
 	_mav_put_float(buf, 4, F_y);
 	_mav_put_float(buf, 8, F_z);
 
-#if MAVLINK_CRC_EXTRA
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT, buf, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_CRC);
-#else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT, buf, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN);
-#endif
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT, buf, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_MIN_LEN, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_CRC);
 #else
 	mavlink_position_ctrl_output_t *packet = (mavlink_position_ctrl_output_t *)msgbuf;
 	packet->F_x = F_x;
 	packet->F_y = F_y;
 	packet->F_z = F_z;
 
-#if MAVLINK_CRC_EXTRA
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT, (const char *)packet, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_CRC);
-#else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT, (const char *)packet, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN);
-#endif
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT, (const char *)packet, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_MIN_LEN, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_CRC);
 #endif
 }
 #endif
@@ -247,11 +250,13 @@ static inline float mavlink_msg_position_ctrl_output_get_F_z(const mavlink_messa
  */
 static inline void mavlink_msg_position_ctrl_output_decode(const mavlink_message_t* msg, mavlink_position_ctrl_output_t* position_ctrl_output)
 {
-#if MAVLINK_NEED_BYTE_SWAP
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	position_ctrl_output->F_x = mavlink_msg_position_ctrl_output_get_F_x(msg);
 	position_ctrl_output->F_y = mavlink_msg_position_ctrl_output_get_F_y(msg);
 	position_ctrl_output->F_z = mavlink_msg_position_ctrl_output_get_F_z(msg);
 #else
-	memcpy(position_ctrl_output, _MAV_PAYLOAD(msg), MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN);
+        uint8_t len = msg->len < MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN? msg->len : MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN;
+        memset(position_ctrl_output, 0, MAVLINK_MSG_ID_POSITION_CTRL_OUTPUT_LEN);
+	memcpy(position_ctrl_output, _MAV_PAYLOAD(msg), len);
 #endif
 }

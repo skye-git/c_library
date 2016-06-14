@@ -2,19 +2,21 @@
 
 #define MAVLINK_MSG_ID_ACTUATOR_LIMITS 200
 
-typedef struct __mavlink_actuator_limits_t
+typedef struct MAVLINK_PACKED __mavlink_actuator_limits_t
 {
- uint64_t timestamp; ///< Onboard time
- float th_min[6]; ///< Minimum thrust of actuators
- float th_start[6]; ///< Start thrust of actuators
- float th_max[6]; ///< Maximum thrust of actuators
- float ang_min[6]; ///< Minimum angle of actuators
- float ang_max[6]; ///< Maximum angle of actuators
- uint8_t valid[6]; ///< Tells wether data is valid
+ uint64_t timestamp; /*< Onboard time*/
+ float th_min[6]; /*< Minimum thrust of actuators*/
+ float th_start[6]; /*< Start thrust of actuators*/
+ float th_max[6]; /*< Maximum thrust of actuators*/
+ float ang_min[6]; /*< Minimum angle of actuators*/
+ float ang_max[6]; /*< Maximum angle of actuators*/
+ uint8_t valid[6]; /*< Tells wether data is valid*/
 } mavlink_actuator_limits_t;
 
 #define MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN 134
+#define MAVLINK_MSG_ID_ACTUATOR_LIMITS_MIN_LEN 134
 #define MAVLINK_MSG_ID_200_LEN 134
+#define MAVLINK_MSG_ID_200_MIN_LEN 134
 
 #define MAVLINK_MSG_ID_ACTUATOR_LIMITS_CRC 197
 #define MAVLINK_MSG_ID_200_CRC 197
@@ -26,6 +28,21 @@ typedef struct __mavlink_actuator_limits_t
 #define MAVLINK_MSG_ACTUATOR_LIMITS_FIELD_ANG_MAX_LEN 6
 #define MAVLINK_MSG_ACTUATOR_LIMITS_FIELD_VALID_LEN 6
 
+#if MAVLINK_COMMAND_24BIT
+#define MAVLINK_MESSAGE_INFO_ACTUATOR_LIMITS { \
+	200, \
+	"ACTUATOR_LIMITS", \
+	7, \
+	{  { "timestamp", NULL, MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_actuator_limits_t, timestamp) }, \
+         { "th_min", NULL, MAVLINK_TYPE_FLOAT, 6, 8, offsetof(mavlink_actuator_limits_t, th_min) }, \
+         { "th_start", NULL, MAVLINK_TYPE_FLOAT, 6, 32, offsetof(mavlink_actuator_limits_t, th_start) }, \
+         { "th_max", NULL, MAVLINK_TYPE_FLOAT, 6, 56, offsetof(mavlink_actuator_limits_t, th_max) }, \
+         { "ang_min", NULL, MAVLINK_TYPE_FLOAT, 6, 80, offsetof(mavlink_actuator_limits_t, ang_min) }, \
+         { "ang_max", NULL, MAVLINK_TYPE_FLOAT, 6, 104, offsetof(mavlink_actuator_limits_t, ang_max) }, \
+         { "valid", NULL, MAVLINK_TYPE_UINT8_T, 6, 128, offsetof(mavlink_actuator_limits_t, valid) }, \
+         } \
+}
+#else
 #define MAVLINK_MESSAGE_INFO_ACTUATOR_LIMITS { \
 	"ACTUATOR_LIMITS", \
 	7, \
@@ -38,7 +55,7 @@ typedef struct __mavlink_actuator_limits_t
          { "valid", NULL, MAVLINK_TYPE_UINT8_T, 6, 128, offsetof(mavlink_actuator_limits_t, valid) }, \
          } \
 }
-
+#endif
 
 /**
  * @brief Pack a actuator_limits message
@@ -81,11 +98,7 @@ static inline uint16_t mavlink_msg_actuator_limits_pack(uint8_t system_id, uint8
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_ACTUATOR_LIMITS;
-#if MAVLINK_CRC_EXTRA
-    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN, MAVLINK_MSG_ID_ACTUATOR_LIMITS_CRC);
-#else
-    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN);
-#endif
+    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_ACTUATOR_LIMITS_MIN_LEN, MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN, MAVLINK_MSG_ID_ACTUATOR_LIMITS_CRC);
 }
 
 /**
@@ -130,11 +143,7 @@ static inline uint16_t mavlink_msg_actuator_limits_pack_chan(uint8_t system_id, 
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_ACTUATOR_LIMITS;
-#if MAVLINK_CRC_EXTRA
-    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN, MAVLINK_MSG_ID_ACTUATOR_LIMITS_CRC);
-#else
-    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN);
-#endif
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_ACTUATOR_LIMITS_MIN_LEN, MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN, MAVLINK_MSG_ID_ACTUATOR_LIMITS_CRC);
 }
 
 /**
@@ -189,11 +198,7 @@ static inline void mavlink_msg_actuator_limits_send(mavlink_channel_t chan, uint
 	_mav_put_float_array(buf, 80, ang_min, 6);
 	_mav_put_float_array(buf, 104, ang_max, 6);
 	_mav_put_uint8_t_array(buf, 128, valid, 6);
-#if MAVLINK_CRC_EXTRA
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATOR_LIMITS, buf, MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN, MAVLINK_MSG_ID_ACTUATOR_LIMITS_CRC);
-#else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATOR_LIMITS, buf, MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN);
-#endif
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATOR_LIMITS, buf, MAVLINK_MSG_ID_ACTUATOR_LIMITS_MIN_LEN, MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN, MAVLINK_MSG_ID_ACTUATOR_LIMITS_CRC);
 #else
 	mavlink_actuator_limits_t packet;
 	packet.timestamp = timestamp;
@@ -203,11 +208,21 @@ static inline void mavlink_msg_actuator_limits_send(mavlink_channel_t chan, uint
 	mav_array_memcpy(packet.ang_min, ang_min, sizeof(float)*6);
 	mav_array_memcpy(packet.ang_max, ang_max, sizeof(float)*6);
 	mav_array_memcpy(packet.valid, valid, sizeof(uint8_t)*6);
-#if MAVLINK_CRC_EXTRA
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATOR_LIMITS, (const char *)&packet, MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN, MAVLINK_MSG_ID_ACTUATOR_LIMITS_CRC);
-#else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATOR_LIMITS, (const char *)&packet, MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN);
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATOR_LIMITS, (const char *)&packet, MAVLINK_MSG_ID_ACTUATOR_LIMITS_MIN_LEN, MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN, MAVLINK_MSG_ID_ACTUATOR_LIMITS_CRC);
 #endif
+}
+
+/**
+ * @brief Send a actuator_limits message
+ * @param chan MAVLink channel to send the message
+ * @param struct The MAVLink struct to serialize
+ */
+static inline void mavlink_msg_actuator_limits_send_struct(mavlink_channel_t chan, const mavlink_actuator_limits_t* actuator_limits)
+{
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+    mavlink_msg_actuator_limits_send(chan, actuator_limits->timestamp, actuator_limits->valid, actuator_limits->th_min, actuator_limits->th_start, actuator_limits->th_max, actuator_limits->ang_min, actuator_limits->ang_max);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATOR_LIMITS, (const char *)actuator_limits, MAVLINK_MSG_ID_ACTUATOR_LIMITS_MIN_LEN, MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN, MAVLINK_MSG_ID_ACTUATOR_LIMITS_CRC);
 #endif
 }
 
@@ -230,11 +245,7 @@ static inline void mavlink_msg_actuator_limits_send_buf(mavlink_message_t *msgbu
 	_mav_put_float_array(buf, 80, ang_min, 6);
 	_mav_put_float_array(buf, 104, ang_max, 6);
 	_mav_put_uint8_t_array(buf, 128, valid, 6);
-#if MAVLINK_CRC_EXTRA
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATOR_LIMITS, buf, MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN, MAVLINK_MSG_ID_ACTUATOR_LIMITS_CRC);
-#else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATOR_LIMITS, buf, MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN);
-#endif
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATOR_LIMITS, buf, MAVLINK_MSG_ID_ACTUATOR_LIMITS_MIN_LEN, MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN, MAVLINK_MSG_ID_ACTUATOR_LIMITS_CRC);
 #else
 	mavlink_actuator_limits_t *packet = (mavlink_actuator_limits_t *)msgbuf;
 	packet->timestamp = timestamp;
@@ -244,11 +255,7 @@ static inline void mavlink_msg_actuator_limits_send_buf(mavlink_message_t *msgbu
 	mav_array_memcpy(packet->ang_min, ang_min, sizeof(float)*6);
 	mav_array_memcpy(packet->ang_max, ang_max, sizeof(float)*6);
 	mav_array_memcpy(packet->valid, valid, sizeof(uint8_t)*6);
-#if MAVLINK_CRC_EXTRA
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATOR_LIMITS, (const char *)packet, MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN, MAVLINK_MSG_ID_ACTUATOR_LIMITS_CRC);
-#else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATOR_LIMITS, (const char *)packet, MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN);
-#endif
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATOR_LIMITS, (const char *)packet, MAVLINK_MSG_ID_ACTUATOR_LIMITS_MIN_LEN, MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN, MAVLINK_MSG_ID_ACTUATOR_LIMITS_CRC);
 #endif
 }
 #endif
@@ -336,7 +343,7 @@ static inline uint16_t mavlink_msg_actuator_limits_get_ang_max(const mavlink_mes
  */
 static inline void mavlink_msg_actuator_limits_decode(const mavlink_message_t* msg, mavlink_actuator_limits_t* actuator_limits)
 {
-#if MAVLINK_NEED_BYTE_SWAP
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	actuator_limits->timestamp = mavlink_msg_actuator_limits_get_timestamp(msg);
 	mavlink_msg_actuator_limits_get_th_min(msg, actuator_limits->th_min);
 	mavlink_msg_actuator_limits_get_th_start(msg, actuator_limits->th_start);
@@ -345,6 +352,8 @@ static inline void mavlink_msg_actuator_limits_decode(const mavlink_message_t* m
 	mavlink_msg_actuator_limits_get_ang_max(msg, actuator_limits->ang_max);
 	mavlink_msg_actuator_limits_get_valid(msg, actuator_limits->valid);
 #else
-	memcpy(actuator_limits, _MAV_PAYLOAD(msg), MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN);
+        uint8_t len = msg->len < MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN? msg->len : MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN;
+        memset(actuator_limits, 0, MAVLINK_MSG_ID_ACTUATOR_LIMITS_LEN);
+	memcpy(actuator_limits, _MAV_PAYLOAD(msg), len);
 #endif
 }

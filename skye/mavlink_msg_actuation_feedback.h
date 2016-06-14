@@ -2,15 +2,17 @@
 
 #define MAVLINK_MSG_ID_ACTUATION_FEEDBACK 213
 
-typedef struct __mavlink_actuation_feedback_t
+typedef struct MAVLINK_PACKED __mavlink_actuation_feedback_t
 {
- uint64_t timestamp; ///< Onboard time
- float thrust[6]; ///< Thrust estimate of AUs [N]
- float angle[6]; ///< Orientation readout of AUs [deg]
+ uint64_t timestamp; /*< Onboard time*/
+ float thrust[6]; /*< Thrust estimate of AUs [N]*/
+ float angle[6]; /*< Orientation readout of AUs [deg]*/
 } mavlink_actuation_feedback_t;
 
 #define MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN 56
+#define MAVLINK_MSG_ID_ACTUATION_FEEDBACK_MIN_LEN 56
 #define MAVLINK_MSG_ID_213_LEN 56
+#define MAVLINK_MSG_ID_213_MIN_LEN 56
 
 #define MAVLINK_MSG_ID_ACTUATION_FEEDBACK_CRC 108
 #define MAVLINK_MSG_ID_213_CRC 108
@@ -18,6 +20,17 @@ typedef struct __mavlink_actuation_feedback_t
 #define MAVLINK_MSG_ACTUATION_FEEDBACK_FIELD_THRUST_LEN 6
 #define MAVLINK_MSG_ACTUATION_FEEDBACK_FIELD_ANGLE_LEN 6
 
+#if MAVLINK_COMMAND_24BIT
+#define MAVLINK_MESSAGE_INFO_ACTUATION_FEEDBACK { \
+	213, \
+	"ACTUATION_FEEDBACK", \
+	3, \
+	{  { "timestamp", NULL, MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_actuation_feedback_t, timestamp) }, \
+         { "thrust", NULL, MAVLINK_TYPE_FLOAT, 6, 8, offsetof(mavlink_actuation_feedback_t, thrust) }, \
+         { "angle", NULL, MAVLINK_TYPE_FLOAT, 6, 32, offsetof(mavlink_actuation_feedback_t, angle) }, \
+         } \
+}
+#else
 #define MAVLINK_MESSAGE_INFO_ACTUATION_FEEDBACK { \
 	"ACTUATION_FEEDBACK", \
 	3, \
@@ -26,7 +39,7 @@ typedef struct __mavlink_actuation_feedback_t
          { "angle", NULL, MAVLINK_TYPE_FLOAT, 6, 32, offsetof(mavlink_actuation_feedback_t, angle) }, \
          } \
 }
-
+#endif
 
 /**
  * @brief Pack a actuation_feedback message
@@ -57,11 +70,7 @@ static inline uint16_t mavlink_msg_actuation_feedback_pack(uint8_t system_id, ui
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_ACTUATION_FEEDBACK;
-#if MAVLINK_CRC_EXTRA
-    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_CRC);
-#else
-    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN);
-#endif
+    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_MIN_LEN, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_CRC);
 }
 
 /**
@@ -94,11 +103,7 @@ static inline uint16_t mavlink_msg_actuation_feedback_pack_chan(uint8_t system_i
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_ACTUATION_FEEDBACK;
-#if MAVLINK_CRC_EXTRA
-    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_CRC);
-#else
-    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN);
-#endif
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_MIN_LEN, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_CRC);
 }
 
 /**
@@ -145,21 +150,27 @@ static inline void mavlink_msg_actuation_feedback_send(mavlink_channel_t chan, u
 	_mav_put_uint64_t(buf, 0, timestamp);
 	_mav_put_float_array(buf, 8, thrust, 6);
 	_mav_put_float_array(buf, 32, angle, 6);
-#if MAVLINK_CRC_EXTRA
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_FEEDBACK, buf, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_CRC);
-#else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_FEEDBACK, buf, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN);
-#endif
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_FEEDBACK, buf, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_MIN_LEN, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_CRC);
 #else
 	mavlink_actuation_feedback_t packet;
 	packet.timestamp = timestamp;
 	mav_array_memcpy(packet.thrust, thrust, sizeof(float)*6);
 	mav_array_memcpy(packet.angle, angle, sizeof(float)*6);
-#if MAVLINK_CRC_EXTRA
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_FEEDBACK, (const char *)&packet, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_CRC);
-#else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_FEEDBACK, (const char *)&packet, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN);
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_FEEDBACK, (const char *)&packet, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_MIN_LEN, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_CRC);
 #endif
+}
+
+/**
+ * @brief Send a actuation_feedback message
+ * @param chan MAVLink channel to send the message
+ * @param struct The MAVLink struct to serialize
+ */
+static inline void mavlink_msg_actuation_feedback_send_struct(mavlink_channel_t chan, const mavlink_actuation_feedback_t* actuation_feedback)
+{
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+    mavlink_msg_actuation_feedback_send(chan, actuation_feedback->timestamp, actuation_feedback->thrust, actuation_feedback->angle);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_FEEDBACK, (const char *)actuation_feedback, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_MIN_LEN, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_CRC);
 #endif
 }
 
@@ -178,21 +189,13 @@ static inline void mavlink_msg_actuation_feedback_send_buf(mavlink_message_t *ms
 	_mav_put_uint64_t(buf, 0, timestamp);
 	_mav_put_float_array(buf, 8, thrust, 6);
 	_mav_put_float_array(buf, 32, angle, 6);
-#if MAVLINK_CRC_EXTRA
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_FEEDBACK, buf, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_CRC);
-#else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_FEEDBACK, buf, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN);
-#endif
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_FEEDBACK, buf, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_MIN_LEN, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_CRC);
 #else
 	mavlink_actuation_feedback_t *packet = (mavlink_actuation_feedback_t *)msgbuf;
 	packet->timestamp = timestamp;
 	mav_array_memcpy(packet->thrust, thrust, sizeof(float)*6);
 	mav_array_memcpy(packet->angle, angle, sizeof(float)*6);
-#if MAVLINK_CRC_EXTRA
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_FEEDBACK, (const char *)packet, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_CRC);
-#else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_FEEDBACK, (const char *)packet, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN);
-#endif
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_FEEDBACK, (const char *)packet, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_MIN_LEN, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_CRC);
 #endif
 }
 #endif
@@ -240,11 +243,13 @@ static inline uint16_t mavlink_msg_actuation_feedback_get_angle(const mavlink_me
  */
 static inline void mavlink_msg_actuation_feedback_decode(const mavlink_message_t* msg, mavlink_actuation_feedback_t* actuation_feedback)
 {
-#if MAVLINK_NEED_BYTE_SWAP
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	actuation_feedback->timestamp = mavlink_msg_actuation_feedback_get_timestamp(msg);
 	mavlink_msg_actuation_feedback_get_thrust(msg, actuation_feedback->thrust);
 	mavlink_msg_actuation_feedback_get_angle(msg, actuation_feedback->angle);
 #else
-	memcpy(actuation_feedback, _MAV_PAYLOAD(msg), MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN);
+        uint8_t len = msg->len < MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN? msg->len : MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN;
+        memset(actuation_feedback, 0, MAVLINK_MSG_ID_ACTUATION_FEEDBACK_LEN);
+	memcpy(actuation_feedback, _MAV_PAYLOAD(msg), len);
 #endif
 }

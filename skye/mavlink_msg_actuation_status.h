@@ -2,20 +2,32 @@
 
 #define MAVLINK_MSG_ID_ACTUATION_STATUS 202
 
-typedef struct __mavlink_actuation_status_t
+typedef struct MAVLINK_PACKED __mavlink_actuation_status_t
 {
- uint8_t au_id; ///< a ID
- int8_t status; ///< -1: unknown, 0: detached:, 1: init, 2: homing, 3: ready, 4: disabled, 5: error
+ uint8_t au_id; /*< a ID*/
+ int8_t status; /*< -1: unknown, 0: detached:, 1: init, 2: homing, 3: ready, 4: disabled, 5: error*/
 } mavlink_actuation_status_t;
 
 #define MAVLINK_MSG_ID_ACTUATION_STATUS_LEN 2
+#define MAVLINK_MSG_ID_ACTUATION_STATUS_MIN_LEN 2
 #define MAVLINK_MSG_ID_202_LEN 2
+#define MAVLINK_MSG_ID_202_MIN_LEN 2
 
 #define MAVLINK_MSG_ID_ACTUATION_STATUS_CRC 228
 #define MAVLINK_MSG_ID_202_CRC 228
 
 
 
+#if MAVLINK_COMMAND_24BIT
+#define MAVLINK_MESSAGE_INFO_ACTUATION_STATUS { \
+	202, \
+	"ACTUATION_STATUS", \
+	2, \
+	{  { "au_id", NULL, MAVLINK_TYPE_UINT8_T, 0, 0, offsetof(mavlink_actuation_status_t, au_id) }, \
+         { "status", NULL, MAVLINK_TYPE_INT8_T, 0, 1, offsetof(mavlink_actuation_status_t, status) }, \
+         } \
+}
+#else
 #define MAVLINK_MESSAGE_INFO_ACTUATION_STATUS { \
 	"ACTUATION_STATUS", \
 	2, \
@@ -23,7 +35,7 @@ typedef struct __mavlink_actuation_status_t
          { "status", NULL, MAVLINK_TYPE_INT8_T, 0, 1, offsetof(mavlink_actuation_status_t, status) }, \
          } \
 }
-
+#endif
 
 /**
  * @brief Pack a actuation_status message
@@ -53,11 +65,7 @@ static inline uint16_t mavlink_msg_actuation_status_pack(uint8_t system_id, uint
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_ACTUATION_STATUS;
-#if MAVLINK_CRC_EXTRA
-    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_ACTUATION_STATUS_LEN, MAVLINK_MSG_ID_ACTUATION_STATUS_CRC);
-#else
-    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_ACTUATION_STATUS_LEN);
-#endif
+    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_ACTUATION_STATUS_MIN_LEN, MAVLINK_MSG_ID_ACTUATION_STATUS_LEN, MAVLINK_MSG_ID_ACTUATION_STATUS_CRC);
 }
 
 /**
@@ -89,11 +97,7 @@ static inline uint16_t mavlink_msg_actuation_status_pack_chan(uint8_t system_id,
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_ACTUATION_STATUS;
-#if MAVLINK_CRC_EXTRA
-    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_ACTUATION_STATUS_LEN, MAVLINK_MSG_ID_ACTUATION_STATUS_CRC);
-#else
-    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_ACTUATION_STATUS_LEN);
-#endif
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_ACTUATION_STATUS_MIN_LEN, MAVLINK_MSG_ID_ACTUATION_STATUS_LEN, MAVLINK_MSG_ID_ACTUATION_STATUS_CRC);
 }
 
 /**
@@ -139,21 +143,27 @@ static inline void mavlink_msg_actuation_status_send(mavlink_channel_t chan, uin
 	_mav_put_uint8_t(buf, 0, au_id);
 	_mav_put_int8_t(buf, 1, status);
 
-#if MAVLINK_CRC_EXTRA
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_STATUS, buf, MAVLINK_MSG_ID_ACTUATION_STATUS_LEN, MAVLINK_MSG_ID_ACTUATION_STATUS_CRC);
-#else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_STATUS, buf, MAVLINK_MSG_ID_ACTUATION_STATUS_LEN);
-#endif
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_STATUS, buf, MAVLINK_MSG_ID_ACTUATION_STATUS_MIN_LEN, MAVLINK_MSG_ID_ACTUATION_STATUS_LEN, MAVLINK_MSG_ID_ACTUATION_STATUS_CRC);
 #else
 	mavlink_actuation_status_t packet;
 	packet.au_id = au_id;
 	packet.status = status;
 
-#if MAVLINK_CRC_EXTRA
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_STATUS, (const char *)&packet, MAVLINK_MSG_ID_ACTUATION_STATUS_LEN, MAVLINK_MSG_ID_ACTUATION_STATUS_CRC);
-#else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_STATUS, (const char *)&packet, MAVLINK_MSG_ID_ACTUATION_STATUS_LEN);
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_STATUS, (const char *)&packet, MAVLINK_MSG_ID_ACTUATION_STATUS_MIN_LEN, MAVLINK_MSG_ID_ACTUATION_STATUS_LEN, MAVLINK_MSG_ID_ACTUATION_STATUS_CRC);
 #endif
+}
+
+/**
+ * @brief Send a actuation_status message
+ * @param chan MAVLink channel to send the message
+ * @param struct The MAVLink struct to serialize
+ */
+static inline void mavlink_msg_actuation_status_send_struct(mavlink_channel_t chan, const mavlink_actuation_status_t* actuation_status)
+{
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+    mavlink_msg_actuation_status_send(chan, actuation_status->au_id, actuation_status->status);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_STATUS, (const char *)actuation_status, MAVLINK_MSG_ID_ACTUATION_STATUS_MIN_LEN, MAVLINK_MSG_ID_ACTUATION_STATUS_LEN, MAVLINK_MSG_ID_ACTUATION_STATUS_CRC);
 #endif
 }
 
@@ -172,21 +182,13 @@ static inline void mavlink_msg_actuation_status_send_buf(mavlink_message_t *msgb
 	_mav_put_uint8_t(buf, 0, au_id);
 	_mav_put_int8_t(buf, 1, status);
 
-#if MAVLINK_CRC_EXTRA
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_STATUS, buf, MAVLINK_MSG_ID_ACTUATION_STATUS_LEN, MAVLINK_MSG_ID_ACTUATION_STATUS_CRC);
-#else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_STATUS, buf, MAVLINK_MSG_ID_ACTUATION_STATUS_LEN);
-#endif
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_STATUS, buf, MAVLINK_MSG_ID_ACTUATION_STATUS_MIN_LEN, MAVLINK_MSG_ID_ACTUATION_STATUS_LEN, MAVLINK_MSG_ID_ACTUATION_STATUS_CRC);
 #else
 	mavlink_actuation_status_t *packet = (mavlink_actuation_status_t *)msgbuf;
 	packet->au_id = au_id;
 	packet->status = status;
 
-#if MAVLINK_CRC_EXTRA
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_STATUS, (const char *)packet, MAVLINK_MSG_ID_ACTUATION_STATUS_LEN, MAVLINK_MSG_ID_ACTUATION_STATUS_CRC);
-#else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_STATUS, (const char *)packet, MAVLINK_MSG_ID_ACTUATION_STATUS_LEN);
-#endif
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_STATUS, (const char *)packet, MAVLINK_MSG_ID_ACTUATION_STATUS_MIN_LEN, MAVLINK_MSG_ID_ACTUATION_STATUS_LEN, MAVLINK_MSG_ID_ACTUATION_STATUS_CRC);
 #endif
 }
 #endif
@@ -224,10 +226,12 @@ static inline int8_t mavlink_msg_actuation_status_get_status(const mavlink_messa
  */
 static inline void mavlink_msg_actuation_status_decode(const mavlink_message_t* msg, mavlink_actuation_status_t* actuation_status)
 {
-#if MAVLINK_NEED_BYTE_SWAP
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	actuation_status->au_id = mavlink_msg_actuation_status_get_au_id(msg);
 	actuation_status->status = mavlink_msg_actuation_status_get_status(msg);
 #else
-	memcpy(actuation_status, _MAV_PAYLOAD(msg), MAVLINK_MSG_ID_ACTUATION_STATUS_LEN);
+        uint8_t len = msg->len < MAVLINK_MSG_ID_ACTUATION_STATUS_LEN? msg->len : MAVLINK_MSG_ID_ACTUATION_STATUS_LEN;
+        memset(actuation_status, 0, MAVLINK_MSG_ID_ACTUATION_STATUS_LEN);
+	memcpy(actuation_status, _MAV_PAYLOAD(msg), len);
 #endif
 }
