@@ -2,7 +2,7 @@
 
 #define MAVLINK_MSG_ID_PID_TUNING 194
 
-typedef struct MAVLINK_PACKED __mavlink_pid_tuning_t
+typedef struct __mavlink_pid_tuning_t
 {
  float desired; /*< desired rate (degrees/s)*/
  float achieved; /*< achieved rate (degrees/s)*/
@@ -14,30 +14,13 @@ typedef struct MAVLINK_PACKED __mavlink_pid_tuning_t
 } mavlink_pid_tuning_t;
 
 #define MAVLINK_MSG_ID_PID_TUNING_LEN 25
-#define MAVLINK_MSG_ID_PID_TUNING_MIN_LEN 25
 #define MAVLINK_MSG_ID_194_LEN 25
-#define MAVLINK_MSG_ID_194_MIN_LEN 25
 
 #define MAVLINK_MSG_ID_PID_TUNING_CRC 98
 #define MAVLINK_MSG_ID_194_CRC 98
 
 
 
-#if MAVLINK_COMMAND_24BIT
-#define MAVLINK_MESSAGE_INFO_PID_TUNING { \
-	194, \
-	"PID_TUNING", \
-	7, \
-	{  { "desired", NULL, MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_pid_tuning_t, desired) }, \
-         { "achieved", NULL, MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_pid_tuning_t, achieved) }, \
-         { "FF", NULL, MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_pid_tuning_t, FF) }, \
-         { "P", NULL, MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_pid_tuning_t, P) }, \
-         { "I", NULL, MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_pid_tuning_t, I) }, \
-         { "D", NULL, MAVLINK_TYPE_FLOAT, 0, 20, offsetof(mavlink_pid_tuning_t, D) }, \
-         { "axis", NULL, MAVLINK_TYPE_UINT8_T, 0, 24, offsetof(mavlink_pid_tuning_t, axis) }, \
-         } \
-}
-#else
 #define MAVLINK_MESSAGE_INFO_PID_TUNING { \
 	"PID_TUNING", \
 	7, \
@@ -50,7 +33,7 @@ typedef struct MAVLINK_PACKED __mavlink_pid_tuning_t
          { "axis", NULL, MAVLINK_TYPE_UINT8_T, 0, 24, offsetof(mavlink_pid_tuning_t, axis) }, \
          } \
 }
-#endif
+
 
 /**
  * @brief Pack a pid_tuning message
@@ -95,7 +78,11 @@ static inline uint16_t mavlink_msg_pid_tuning_pack(uint8_t system_id, uint8_t co
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_PID_TUNING;
-    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_PID_TUNING_MIN_LEN, MAVLINK_MSG_ID_PID_TUNING_LEN, MAVLINK_MSG_ID_PID_TUNING_CRC);
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_PID_TUNING_LEN, MAVLINK_MSG_ID_PID_TUNING_CRC);
+#else
+    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_PID_TUNING_LEN);
+#endif
 }
 
 /**
@@ -142,7 +129,11 @@ static inline uint16_t mavlink_msg_pid_tuning_pack_chan(uint8_t system_id, uint8
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_PID_TUNING;
-    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_PID_TUNING_MIN_LEN, MAVLINK_MSG_ID_PID_TUNING_LEN, MAVLINK_MSG_ID_PID_TUNING_CRC);
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_PID_TUNING_LEN, MAVLINK_MSG_ID_PID_TUNING_CRC);
+#else
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_PID_TUNING_LEN);
+#endif
 }
 
 /**
@@ -198,7 +189,11 @@ static inline void mavlink_msg_pid_tuning_send(mavlink_channel_t chan, uint8_t a
 	_mav_put_float(buf, 20, D);
 	_mav_put_uint8_t(buf, 24, axis);
 
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PID_TUNING, buf, MAVLINK_MSG_ID_PID_TUNING_MIN_LEN, MAVLINK_MSG_ID_PID_TUNING_LEN, MAVLINK_MSG_ID_PID_TUNING_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PID_TUNING, buf, MAVLINK_MSG_ID_PID_TUNING_LEN, MAVLINK_MSG_ID_PID_TUNING_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PID_TUNING, buf, MAVLINK_MSG_ID_PID_TUNING_LEN);
+#endif
 #else
 	mavlink_pid_tuning_t packet;
 	packet.desired = desired;
@@ -209,21 +204,11 @@ static inline void mavlink_msg_pid_tuning_send(mavlink_channel_t chan, uint8_t a
 	packet.D = D;
 	packet.axis = axis;
 
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PID_TUNING, (const char *)&packet, MAVLINK_MSG_ID_PID_TUNING_MIN_LEN, MAVLINK_MSG_ID_PID_TUNING_LEN, MAVLINK_MSG_ID_PID_TUNING_CRC);
-#endif
-}
-
-/**
- * @brief Send a pid_tuning message
- * @param chan MAVLink channel to send the message
- * @param struct The MAVLink struct to serialize
- */
-static inline void mavlink_msg_pid_tuning_send_struct(mavlink_channel_t chan, const mavlink_pid_tuning_t* pid_tuning)
-{
-#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_pid_tuning_send(chan, pid_tuning->axis, pid_tuning->desired, pid_tuning->achieved, pid_tuning->FF, pid_tuning->P, pid_tuning->I, pid_tuning->D);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PID_TUNING, (const char *)&packet, MAVLINK_MSG_ID_PID_TUNING_LEN, MAVLINK_MSG_ID_PID_TUNING_CRC);
 #else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PID_TUNING, (const char *)pid_tuning, MAVLINK_MSG_ID_PID_TUNING_MIN_LEN, MAVLINK_MSG_ID_PID_TUNING_LEN, MAVLINK_MSG_ID_PID_TUNING_CRC);
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PID_TUNING, (const char *)&packet, MAVLINK_MSG_ID_PID_TUNING_LEN);
+#endif
 #endif
 }
 
@@ -247,7 +232,11 @@ static inline void mavlink_msg_pid_tuning_send_buf(mavlink_message_t *msgbuf, ma
 	_mav_put_float(buf, 20, D);
 	_mav_put_uint8_t(buf, 24, axis);
 
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PID_TUNING, buf, MAVLINK_MSG_ID_PID_TUNING_MIN_LEN, MAVLINK_MSG_ID_PID_TUNING_LEN, MAVLINK_MSG_ID_PID_TUNING_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PID_TUNING, buf, MAVLINK_MSG_ID_PID_TUNING_LEN, MAVLINK_MSG_ID_PID_TUNING_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PID_TUNING, buf, MAVLINK_MSG_ID_PID_TUNING_LEN);
+#endif
 #else
 	mavlink_pid_tuning_t *packet = (mavlink_pid_tuning_t *)msgbuf;
 	packet->desired = desired;
@@ -258,7 +247,11 @@ static inline void mavlink_msg_pid_tuning_send_buf(mavlink_message_t *msgbuf, ma
 	packet->D = D;
 	packet->axis = axis;
 
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PID_TUNING, (const char *)packet, MAVLINK_MSG_ID_PID_TUNING_MIN_LEN, MAVLINK_MSG_ID_PID_TUNING_LEN, MAVLINK_MSG_ID_PID_TUNING_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PID_TUNING, (const char *)packet, MAVLINK_MSG_ID_PID_TUNING_LEN, MAVLINK_MSG_ID_PID_TUNING_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PID_TUNING, (const char *)packet, MAVLINK_MSG_ID_PID_TUNING_LEN);
+#endif
 #endif
 }
 #endif
@@ -346,7 +339,7 @@ static inline float mavlink_msg_pid_tuning_get_D(const mavlink_message_t* msg)
  */
 static inline void mavlink_msg_pid_tuning_decode(const mavlink_message_t* msg, mavlink_pid_tuning_t* pid_tuning)
 {
-#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+#if MAVLINK_NEED_BYTE_SWAP
 	pid_tuning->desired = mavlink_msg_pid_tuning_get_desired(msg);
 	pid_tuning->achieved = mavlink_msg_pid_tuning_get_achieved(msg);
 	pid_tuning->FF = mavlink_msg_pid_tuning_get_FF(msg);
@@ -355,8 +348,6 @@ static inline void mavlink_msg_pid_tuning_decode(const mavlink_message_t* msg, m
 	pid_tuning->D = mavlink_msg_pid_tuning_get_D(msg);
 	pid_tuning->axis = mavlink_msg_pid_tuning_get_axis(msg);
 #else
-        uint8_t len = msg->len < MAVLINK_MSG_ID_PID_TUNING_LEN? msg->len : MAVLINK_MSG_ID_PID_TUNING_LEN;
-        memset(pid_tuning, 0, MAVLINK_MSG_ID_PID_TUNING_LEN);
-	memcpy(pid_tuning, _MAV_PAYLOAD(msg), len);
+	memcpy(pid_tuning, _MAV_PAYLOAD(msg), MAVLINK_MSG_ID_PID_TUNING_LEN);
 #endif
 }
