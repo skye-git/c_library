@@ -234,6 +234,21 @@
 		<field type="float[6]" name="angle_valid">Indicates if angle field is valid</field>
 		<field type="float[6]" name="thrust_valid">Indicate if thrust field is valid</field>
 	</message>
+	<message id="217" name="BATTERY_STATUS_WITH_ID">
+		<description>Battery status of each AU</description>
+		<field type="uint8_t" name="id">Au ID</field>
+		<field type="int32_t" name="current_consumed"></field>
+		<field type="int32_t" name="energy_consumed"></field>
+		<field type="int32_t" name="current_charged"></field>
+		<field type="uint32_t" name="time_charged"></field>
+		<field type="int16_t" name="temperature"></field>
+		<field type="uint16_t" name="voltage"></field>
+		<field type="uint16_t[6]" name="cell_voltages"></field>
+		<field type="int8_t" name="n_cells"></field>
+		<field type="int16_t" name="current_battery"></field>
+		<field type="uint8_t" name="battery_state"></field>
+		<field type="int8_t" name="battery_remaining"></field>
+	</message>
 	<!-- messages 220-229 for skye input messages -->
 	<message id="220" name="LED_CONTROL">
 		<description>Control single LED or LED array</description>
