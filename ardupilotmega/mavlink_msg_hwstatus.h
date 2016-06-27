@@ -2,32 +2,20 @@
 
 #define MAVLINK_MSG_ID_HWSTATUS 165
 
-typedef struct MAVLINK_PACKED __mavlink_hwstatus_t
+typedef struct __mavlink_hwstatus_t
 {
- uint16_t Vcc; /*< board voltage (mV)*/
- uint8_t I2Cerr; /*< I2C error count*/
+ uint16_t Vcc; ///< board voltage (mV)
+ uint8_t I2Cerr; ///< I2C error count
 } mavlink_hwstatus_t;
 
 #define MAVLINK_MSG_ID_HWSTATUS_LEN 3
-#define MAVLINK_MSG_ID_HWSTATUS_MIN_LEN 3
 #define MAVLINK_MSG_ID_165_LEN 3
-#define MAVLINK_MSG_ID_165_MIN_LEN 3
 
 #define MAVLINK_MSG_ID_HWSTATUS_CRC 21
 #define MAVLINK_MSG_ID_165_CRC 21
 
 
 
-#if MAVLINK_COMMAND_24BIT
-#define MAVLINK_MESSAGE_INFO_HWSTATUS { \
-	165, \
-	"HWSTATUS", \
-	2, \
-	{  { "Vcc", NULL, MAVLINK_TYPE_UINT16_T, 0, 0, offsetof(mavlink_hwstatus_t, Vcc) }, \
-         { "I2Cerr", NULL, MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_hwstatus_t, I2Cerr) }, \
-         } \
-}
-#else
 #define MAVLINK_MESSAGE_INFO_HWSTATUS { \
 	"HWSTATUS", \
 	2, \
@@ -35,7 +23,7 @@ typedef struct MAVLINK_PACKED __mavlink_hwstatus_t
          { "I2Cerr", NULL, MAVLINK_TYPE_UINT8_T, 0, 2, offsetof(mavlink_hwstatus_t, I2Cerr) }, \
          } \
 }
-#endif
+
 
 /**
  * @brief Pack a hwstatus message
@@ -65,7 +53,11 @@ static inline uint16_t mavlink_msg_hwstatus_pack(uint8_t system_id, uint8_t comp
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_HWSTATUS;
-    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_HWSTATUS_MIN_LEN, MAVLINK_MSG_ID_HWSTATUS_LEN, MAVLINK_MSG_ID_HWSTATUS_CRC);
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_HWSTATUS_LEN, MAVLINK_MSG_ID_HWSTATUS_CRC);
+#else
+    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_HWSTATUS_LEN);
+#endif
 }
 
 /**
@@ -97,7 +89,11 @@ static inline uint16_t mavlink_msg_hwstatus_pack_chan(uint8_t system_id, uint8_t
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_HWSTATUS;
-    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_HWSTATUS_MIN_LEN, MAVLINK_MSG_ID_HWSTATUS_LEN, MAVLINK_MSG_ID_HWSTATUS_CRC);
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_HWSTATUS_LEN, MAVLINK_MSG_ID_HWSTATUS_CRC);
+#else
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_HWSTATUS_LEN);
+#endif
 }
 
 /**
@@ -143,27 +139,21 @@ static inline void mavlink_msg_hwstatus_send(mavlink_channel_t chan, uint16_t Vc
 	_mav_put_uint16_t(buf, 0, Vcc);
 	_mav_put_uint8_t(buf, 2, I2Cerr);
 
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_HWSTATUS, buf, MAVLINK_MSG_ID_HWSTATUS_MIN_LEN, MAVLINK_MSG_ID_HWSTATUS_LEN, MAVLINK_MSG_ID_HWSTATUS_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_HWSTATUS, buf, MAVLINK_MSG_ID_HWSTATUS_LEN, MAVLINK_MSG_ID_HWSTATUS_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_HWSTATUS, buf, MAVLINK_MSG_ID_HWSTATUS_LEN);
+#endif
 #else
 	mavlink_hwstatus_t packet;
 	packet.Vcc = Vcc;
 	packet.I2Cerr = I2Cerr;
 
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_HWSTATUS, (const char *)&packet, MAVLINK_MSG_ID_HWSTATUS_MIN_LEN, MAVLINK_MSG_ID_HWSTATUS_LEN, MAVLINK_MSG_ID_HWSTATUS_CRC);
-#endif
-}
-
-/**
- * @brief Send a hwstatus message
- * @param chan MAVLink channel to send the message
- * @param struct The MAVLink struct to serialize
- */
-static inline void mavlink_msg_hwstatus_send_struct(mavlink_channel_t chan, const mavlink_hwstatus_t* hwstatus)
-{
-#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_hwstatus_send(chan, hwstatus->Vcc, hwstatus->I2Cerr);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_HWSTATUS, (const char *)&packet, MAVLINK_MSG_ID_HWSTATUS_LEN, MAVLINK_MSG_ID_HWSTATUS_CRC);
 #else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_HWSTATUS, (const char *)hwstatus, MAVLINK_MSG_ID_HWSTATUS_MIN_LEN, MAVLINK_MSG_ID_HWSTATUS_LEN, MAVLINK_MSG_ID_HWSTATUS_CRC);
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_HWSTATUS, (const char *)&packet, MAVLINK_MSG_ID_HWSTATUS_LEN);
+#endif
 #endif
 }
 
@@ -182,13 +172,21 @@ static inline void mavlink_msg_hwstatus_send_buf(mavlink_message_t *msgbuf, mavl
 	_mav_put_uint16_t(buf, 0, Vcc);
 	_mav_put_uint8_t(buf, 2, I2Cerr);
 
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_HWSTATUS, buf, MAVLINK_MSG_ID_HWSTATUS_MIN_LEN, MAVLINK_MSG_ID_HWSTATUS_LEN, MAVLINK_MSG_ID_HWSTATUS_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_HWSTATUS, buf, MAVLINK_MSG_ID_HWSTATUS_LEN, MAVLINK_MSG_ID_HWSTATUS_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_HWSTATUS, buf, MAVLINK_MSG_ID_HWSTATUS_LEN);
+#endif
 #else
 	mavlink_hwstatus_t *packet = (mavlink_hwstatus_t *)msgbuf;
 	packet->Vcc = Vcc;
 	packet->I2Cerr = I2Cerr;
 
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_HWSTATUS, (const char *)packet, MAVLINK_MSG_ID_HWSTATUS_MIN_LEN, MAVLINK_MSG_ID_HWSTATUS_LEN, MAVLINK_MSG_ID_HWSTATUS_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_HWSTATUS, (const char *)packet, MAVLINK_MSG_ID_HWSTATUS_LEN, MAVLINK_MSG_ID_HWSTATUS_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_HWSTATUS, (const char *)packet, MAVLINK_MSG_ID_HWSTATUS_LEN);
+#endif
 #endif
 }
 #endif
@@ -226,12 +224,10 @@ static inline uint8_t mavlink_msg_hwstatus_get_I2Cerr(const mavlink_message_t* m
  */
 static inline void mavlink_msg_hwstatus_decode(const mavlink_message_t* msg, mavlink_hwstatus_t* hwstatus)
 {
-#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+#if MAVLINK_NEED_BYTE_SWAP
 	hwstatus->Vcc = mavlink_msg_hwstatus_get_Vcc(msg);
 	hwstatus->I2Cerr = mavlink_msg_hwstatus_get_I2Cerr(msg);
 #else
-        uint8_t len = msg->len < MAVLINK_MSG_ID_HWSTATUS_LEN? msg->len : MAVLINK_MSG_ID_HWSTATUS_LEN;
-        memset(hwstatus, 0, MAVLINK_MSG_ID_HWSTATUS_LEN);
-	memcpy(hwstatus, _MAV_PAYLOAD(msg), len);
+	memcpy(hwstatus, _MAV_PAYLOAD(msg), MAVLINK_MSG_ID_HWSTATUS_LEN);
 #endif
 }

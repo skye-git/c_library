@@ -2,42 +2,25 @@
 
 #define MAVLINK_MSG_ID_SKYE_POSITION_HIL 224
 
-typedef struct MAVLINK_PACKED __mavlink_skye_position_hil_t
+typedef struct __mavlink_skye_position_hil_t
 {
- uint64_t timestamp; /*< Unix time*/
- float x; /*< Local North position*/
- float y; /*< Local East position*/
- float z; /*< Local Down position*/
- float vx; /*< Local North velocity*/
- float vy; /*< Local East velocity*/
- float vz; /*< Local Down velocity*/
+ uint64_t timestamp; ///< Unix time
+ float x; ///< Local North position
+ float y; ///< Local East position
+ float z; ///< Local Down position
+ float vx; ///< Local North velocity
+ float vy; ///< Local East velocity
+ float vz; ///< Local Down velocity
 } mavlink_skye_position_hil_t;
 
 #define MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN 32
-#define MAVLINK_MSG_ID_SKYE_POSITION_HIL_MIN_LEN 32
 #define MAVLINK_MSG_ID_224_LEN 32
-#define MAVLINK_MSG_ID_224_MIN_LEN 32
 
 #define MAVLINK_MSG_ID_SKYE_POSITION_HIL_CRC 71
 #define MAVLINK_MSG_ID_224_CRC 71
 
 
 
-#if MAVLINK_COMMAND_24BIT
-#define MAVLINK_MESSAGE_INFO_SKYE_POSITION_HIL { \
-	224, \
-	"SKYE_POSITION_HIL", \
-	7, \
-	{  { "timestamp", NULL, MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_skye_position_hil_t, timestamp) }, \
-         { "x", NULL, MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_skye_position_hil_t, x) }, \
-         { "y", NULL, MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_skye_position_hil_t, y) }, \
-         { "z", NULL, MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_skye_position_hil_t, z) }, \
-         { "vx", NULL, MAVLINK_TYPE_FLOAT, 0, 20, offsetof(mavlink_skye_position_hil_t, vx) }, \
-         { "vy", NULL, MAVLINK_TYPE_FLOAT, 0, 24, offsetof(mavlink_skye_position_hil_t, vy) }, \
-         { "vz", NULL, MAVLINK_TYPE_FLOAT, 0, 28, offsetof(mavlink_skye_position_hil_t, vz) }, \
-         } \
-}
-#else
 #define MAVLINK_MESSAGE_INFO_SKYE_POSITION_HIL { \
 	"SKYE_POSITION_HIL", \
 	7, \
@@ -50,7 +33,7 @@ typedef struct MAVLINK_PACKED __mavlink_skye_position_hil_t
          { "vz", NULL, MAVLINK_TYPE_FLOAT, 0, 28, offsetof(mavlink_skye_position_hil_t, vz) }, \
          } \
 }
-#endif
+
 
 /**
  * @brief Pack a skye_position_hil message
@@ -95,7 +78,11 @@ static inline uint16_t mavlink_msg_skye_position_hil_pack(uint8_t system_id, uin
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_SKYE_POSITION_HIL;
-    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_SKYE_POSITION_HIL_MIN_LEN, MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN, MAVLINK_MSG_ID_SKYE_POSITION_HIL_CRC);
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN, MAVLINK_MSG_ID_SKYE_POSITION_HIL_CRC);
+#else
+    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN);
+#endif
 }
 
 /**
@@ -142,7 +129,11 @@ static inline uint16_t mavlink_msg_skye_position_hil_pack_chan(uint8_t system_id
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_SKYE_POSITION_HIL;
-    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_SKYE_POSITION_HIL_MIN_LEN, MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN, MAVLINK_MSG_ID_SKYE_POSITION_HIL_CRC);
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN, MAVLINK_MSG_ID_SKYE_POSITION_HIL_CRC);
+#else
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN);
+#endif
 }
 
 /**
@@ -198,7 +189,11 @@ static inline void mavlink_msg_skye_position_hil_send(mavlink_channel_t chan, ui
 	_mav_put_float(buf, 24, vy);
 	_mav_put_float(buf, 28, vz);
 
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_POSITION_HIL, buf, MAVLINK_MSG_ID_SKYE_POSITION_HIL_MIN_LEN, MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN, MAVLINK_MSG_ID_SKYE_POSITION_HIL_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_POSITION_HIL, buf, MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN, MAVLINK_MSG_ID_SKYE_POSITION_HIL_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_POSITION_HIL, buf, MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN);
+#endif
 #else
 	mavlink_skye_position_hil_t packet;
 	packet.timestamp = timestamp;
@@ -209,21 +204,11 @@ static inline void mavlink_msg_skye_position_hil_send(mavlink_channel_t chan, ui
 	packet.vy = vy;
 	packet.vz = vz;
 
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_POSITION_HIL, (const char *)&packet, MAVLINK_MSG_ID_SKYE_POSITION_HIL_MIN_LEN, MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN, MAVLINK_MSG_ID_SKYE_POSITION_HIL_CRC);
-#endif
-}
-
-/**
- * @brief Send a skye_position_hil message
- * @param chan MAVLink channel to send the message
- * @param struct The MAVLink struct to serialize
- */
-static inline void mavlink_msg_skye_position_hil_send_struct(mavlink_channel_t chan, const mavlink_skye_position_hil_t* skye_position_hil)
-{
-#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_skye_position_hil_send(chan, skye_position_hil->timestamp, skye_position_hil->x, skye_position_hil->y, skye_position_hil->z, skye_position_hil->vx, skye_position_hil->vy, skye_position_hil->vz);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_POSITION_HIL, (const char *)&packet, MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN, MAVLINK_MSG_ID_SKYE_POSITION_HIL_CRC);
 #else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_POSITION_HIL, (const char *)skye_position_hil, MAVLINK_MSG_ID_SKYE_POSITION_HIL_MIN_LEN, MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN, MAVLINK_MSG_ID_SKYE_POSITION_HIL_CRC);
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_POSITION_HIL, (const char *)&packet, MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN);
+#endif
 #endif
 }
 
@@ -247,7 +232,11 @@ static inline void mavlink_msg_skye_position_hil_send_buf(mavlink_message_t *msg
 	_mav_put_float(buf, 24, vy);
 	_mav_put_float(buf, 28, vz);
 
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_POSITION_HIL, buf, MAVLINK_MSG_ID_SKYE_POSITION_HIL_MIN_LEN, MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN, MAVLINK_MSG_ID_SKYE_POSITION_HIL_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_POSITION_HIL, buf, MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN, MAVLINK_MSG_ID_SKYE_POSITION_HIL_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_POSITION_HIL, buf, MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN);
+#endif
 #else
 	mavlink_skye_position_hil_t *packet = (mavlink_skye_position_hil_t *)msgbuf;
 	packet->timestamp = timestamp;
@@ -258,7 +247,11 @@ static inline void mavlink_msg_skye_position_hil_send_buf(mavlink_message_t *msg
 	packet->vy = vy;
 	packet->vz = vz;
 
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_POSITION_HIL, (const char *)packet, MAVLINK_MSG_ID_SKYE_POSITION_HIL_MIN_LEN, MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN, MAVLINK_MSG_ID_SKYE_POSITION_HIL_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_POSITION_HIL, (const char *)packet, MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN, MAVLINK_MSG_ID_SKYE_POSITION_HIL_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_POSITION_HIL, (const char *)packet, MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN);
+#endif
 #endif
 }
 #endif
@@ -346,7 +339,7 @@ static inline float mavlink_msg_skye_position_hil_get_vz(const mavlink_message_t
  */
 static inline void mavlink_msg_skye_position_hil_decode(const mavlink_message_t* msg, mavlink_skye_position_hil_t* skye_position_hil)
 {
-#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+#if MAVLINK_NEED_BYTE_SWAP
 	skye_position_hil->timestamp = mavlink_msg_skye_position_hil_get_timestamp(msg);
 	skye_position_hil->x = mavlink_msg_skye_position_hil_get_x(msg);
 	skye_position_hil->y = mavlink_msg_skye_position_hil_get_y(msg);
@@ -355,8 +348,6 @@ static inline void mavlink_msg_skye_position_hil_decode(const mavlink_message_t*
 	skye_position_hil->vy = mavlink_msg_skye_position_hil_get_vy(msg);
 	skye_position_hil->vz = mavlink_msg_skye_position_hil_get_vz(msg);
 #else
-        uint8_t len = msg->len < MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN? msg->len : MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN;
-        memset(skye_position_hil, 0, MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN);
-	memcpy(skye_position_hil, _MAV_PAYLOAD(msg), len);
+	memcpy(skye_position_hil, _MAV_PAYLOAD(msg), MAVLINK_MSG_ID_SKYE_POSITION_HIL_LEN);
 #endif
 }

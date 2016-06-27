@@ -2,44 +2,26 @@
 
 #define MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL 223
 
-typedef struct MAVLINK_PACKED __mavlink_skye_attitude_hil_t
+typedef struct __mavlink_skye_attitude_hil_t
 {
- uint64_t timestamp; /*< Unix time*/
- float roll; /*< Roll angle (rad, Tait-Bryan, NED)*/
- float pitch; /*< Pitch angle (rad, Tait-Bryan, NED)*/
- float yaw; /*< Yaw angle (rad, Tait-Bryan, NED)*/
- float rollspeed; /*< Roll body angular rate (rad/s, x forward/y right/z down)*/
- float pitchspeed; /*< Pitch body angular rate (rad/s, x forward/y right/z down)*/
- float yawspeed; /*< Yaw body angular rate (rad/s, x forward/y right/z down)*/
- float q[4]; /*< Quaternion (NED)*/
+ uint64_t timestamp; ///< Unix time
+ float roll; ///< Roll angle (rad, Tait-Bryan, NED)
+ float pitch; ///< Pitch angle (rad, Tait-Bryan, NED)
+ float yaw; ///< Yaw angle (rad, Tait-Bryan, NED)
+ float rollspeed; ///< Roll body angular rate (rad/s, x forward/y right/z down)
+ float pitchspeed; ///< Pitch body angular rate (rad/s, x forward/y right/z down)
+ float yawspeed; ///< Yaw body angular rate (rad/s, x forward/y right/z down)
+ float q[4]; ///< Quaternion (NED)
 } mavlink_skye_attitude_hil_t;
 
 #define MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN 48
-#define MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_MIN_LEN 48
 #define MAVLINK_MSG_ID_223_LEN 48
-#define MAVLINK_MSG_ID_223_MIN_LEN 48
 
 #define MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_CRC 156
 #define MAVLINK_MSG_ID_223_CRC 156
 
 #define MAVLINK_MSG_SKYE_ATTITUDE_HIL_FIELD_Q_LEN 4
 
-#if MAVLINK_COMMAND_24BIT
-#define MAVLINK_MESSAGE_INFO_SKYE_ATTITUDE_HIL { \
-	223, \
-	"SKYE_ATTITUDE_HIL", \
-	8, \
-	{  { "timestamp", NULL, MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_skye_attitude_hil_t, timestamp) }, \
-         { "roll", NULL, MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_skye_attitude_hil_t, roll) }, \
-         { "pitch", NULL, MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_skye_attitude_hil_t, pitch) }, \
-         { "yaw", NULL, MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_skye_attitude_hil_t, yaw) }, \
-         { "rollspeed", NULL, MAVLINK_TYPE_FLOAT, 0, 20, offsetof(mavlink_skye_attitude_hil_t, rollspeed) }, \
-         { "pitchspeed", NULL, MAVLINK_TYPE_FLOAT, 0, 24, offsetof(mavlink_skye_attitude_hil_t, pitchspeed) }, \
-         { "yawspeed", NULL, MAVLINK_TYPE_FLOAT, 0, 28, offsetof(mavlink_skye_attitude_hil_t, yawspeed) }, \
-         { "q", NULL, MAVLINK_TYPE_FLOAT, 4, 32, offsetof(mavlink_skye_attitude_hil_t, q) }, \
-         } \
-}
-#else
 #define MAVLINK_MESSAGE_INFO_SKYE_ATTITUDE_HIL { \
 	"SKYE_ATTITUDE_HIL", \
 	8, \
@@ -53,7 +35,7 @@ typedef struct MAVLINK_PACKED __mavlink_skye_attitude_hil_t
          { "q", NULL, MAVLINK_TYPE_FLOAT, 4, 32, offsetof(mavlink_skye_attitude_hil_t, q) }, \
          } \
 }
-#endif
+
 
 /**
  * @brief Pack a skye_attitude_hil message
@@ -99,7 +81,11 @@ static inline uint16_t mavlink_msg_skye_attitude_hil_pack(uint8_t system_id, uin
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL;
-    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_MIN_LEN, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_CRC);
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_CRC);
+#else
+    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN);
+#endif
 }
 
 /**
@@ -147,7 +133,11 @@ static inline uint16_t mavlink_msg_skye_attitude_hil_pack_chan(uint8_t system_id
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL;
-    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_MIN_LEN, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_CRC);
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_CRC);
+#else
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN);
+#endif
 }
 
 /**
@@ -204,7 +194,11 @@ static inline void mavlink_msg_skye_attitude_hil_send(mavlink_channel_t chan, ui
 	_mav_put_float(buf, 24, pitchspeed);
 	_mav_put_float(buf, 28, yawspeed);
 	_mav_put_float_array(buf, 32, q, 4);
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL, buf, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_MIN_LEN, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL, buf, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL, buf, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN);
+#endif
 #else
 	mavlink_skye_attitude_hil_t packet;
 	packet.timestamp = timestamp;
@@ -215,21 +209,11 @@ static inline void mavlink_msg_skye_attitude_hil_send(mavlink_channel_t chan, ui
 	packet.pitchspeed = pitchspeed;
 	packet.yawspeed = yawspeed;
 	mav_array_memcpy(packet.q, q, sizeof(float)*4);
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL, (const char *)&packet, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_MIN_LEN, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_CRC);
-#endif
-}
-
-/**
- * @brief Send a skye_attitude_hil message
- * @param chan MAVLink channel to send the message
- * @param struct The MAVLink struct to serialize
- */
-static inline void mavlink_msg_skye_attitude_hil_send_struct(mavlink_channel_t chan, const mavlink_skye_attitude_hil_t* skye_attitude_hil)
-{
-#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_skye_attitude_hil_send(chan, skye_attitude_hil->timestamp, skye_attitude_hil->roll, skye_attitude_hil->pitch, skye_attitude_hil->yaw, skye_attitude_hil->rollspeed, skye_attitude_hil->pitchspeed, skye_attitude_hil->yawspeed, skye_attitude_hil->q);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL, (const char *)&packet, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_CRC);
 #else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL, (const char *)skye_attitude_hil, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_MIN_LEN, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_CRC);
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL, (const char *)&packet, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN);
+#endif
 #endif
 }
 
@@ -253,7 +237,11 @@ static inline void mavlink_msg_skye_attitude_hil_send_buf(mavlink_message_t *msg
 	_mav_put_float(buf, 24, pitchspeed);
 	_mav_put_float(buf, 28, yawspeed);
 	_mav_put_float_array(buf, 32, q, 4);
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL, buf, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_MIN_LEN, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL, buf, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL, buf, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN);
+#endif
 #else
 	mavlink_skye_attitude_hil_t *packet = (mavlink_skye_attitude_hil_t *)msgbuf;
 	packet->timestamp = timestamp;
@@ -264,7 +252,11 @@ static inline void mavlink_msg_skye_attitude_hil_send_buf(mavlink_message_t *msg
 	packet->pitchspeed = pitchspeed;
 	packet->yawspeed = yawspeed;
 	mav_array_memcpy(packet->q, q, sizeof(float)*4);
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL, (const char *)packet, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_MIN_LEN, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL, (const char *)packet, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL, (const char *)packet, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN);
+#endif
 #endif
 }
 #endif
@@ -362,7 +354,7 @@ static inline uint16_t mavlink_msg_skye_attitude_hil_get_q(const mavlink_message
  */
 static inline void mavlink_msg_skye_attitude_hil_decode(const mavlink_message_t* msg, mavlink_skye_attitude_hil_t* skye_attitude_hil)
 {
-#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+#if MAVLINK_NEED_BYTE_SWAP
 	skye_attitude_hil->timestamp = mavlink_msg_skye_attitude_hil_get_timestamp(msg);
 	skye_attitude_hil->roll = mavlink_msg_skye_attitude_hil_get_roll(msg);
 	skye_attitude_hil->pitch = mavlink_msg_skye_attitude_hil_get_pitch(msg);
@@ -372,8 +364,6 @@ static inline void mavlink_msg_skye_attitude_hil_decode(const mavlink_message_t*
 	skye_attitude_hil->yawspeed = mavlink_msg_skye_attitude_hil_get_yawspeed(msg);
 	mavlink_msg_skye_attitude_hil_get_q(msg, skye_attitude_hil->q);
 #else
-        uint8_t len = msg->len < MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN? msg->len : MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN;
-        memset(skye_attitude_hil, 0, MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN);
-	memcpy(skye_attitude_hil, _MAV_PAYLOAD(msg), len);
+	memcpy(skye_attitude_hil, _MAV_PAYLOAD(msg), MAVLINK_MSG_ID_SKYE_ATTITUDE_HIL_LEN);
 #endif
 }

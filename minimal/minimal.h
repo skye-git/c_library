@@ -132,6 +132,8 @@ typedef enum MAV_STATE
 } MAV_STATE;
 #endif
 
+
+
 // MAVLINK VERSION
 
 #ifndef MAVLINK_VERSION
@@ -145,13 +147,6 @@ typedef enum MAV_STATE
 
 // MESSAGE DEFINITIONS
 #include "./mavlink_msg_heartbeat.h"
-
-// base include
-
-
-#if MAVLINK_COMMAND_24BIT
-#include "../mavlink_get_info.h"
-#endif
 
 #ifdef __cplusplus
 }

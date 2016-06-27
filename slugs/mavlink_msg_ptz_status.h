@@ -2,34 +2,21 @@
 
 #define MAVLINK_MSG_ID_PTZ_STATUS 192
 
-typedef struct MAVLINK_PACKED __mavlink_ptz_status_t
+typedef struct __mavlink_ptz_status_t
 {
- int16_t pan; /*< The Pan value in 10ths of degree*/
- int16_t tilt; /*< The Tilt value in 10ths of degree*/
- uint8_t zoom; /*< The actual Zoom Value*/
+ int16_t pan; ///< The Pan value in 10ths of degree
+ int16_t tilt; ///< The Tilt value in 10ths of degree
+ uint8_t zoom; ///< The actual Zoom Value
 } mavlink_ptz_status_t;
 
 #define MAVLINK_MSG_ID_PTZ_STATUS_LEN 5
-#define MAVLINK_MSG_ID_PTZ_STATUS_MIN_LEN 5
 #define MAVLINK_MSG_ID_192_LEN 5
-#define MAVLINK_MSG_ID_192_MIN_LEN 5
 
 #define MAVLINK_MSG_ID_PTZ_STATUS_CRC 187
 #define MAVLINK_MSG_ID_192_CRC 187
 
 
 
-#if MAVLINK_COMMAND_24BIT
-#define MAVLINK_MESSAGE_INFO_PTZ_STATUS { \
-	192, \
-	"PTZ_STATUS", \
-	3, \
-	{  { "pan", NULL, MAVLINK_TYPE_INT16_T, 0, 0, offsetof(mavlink_ptz_status_t, pan) }, \
-         { "tilt", NULL, MAVLINK_TYPE_INT16_T, 0, 2, offsetof(mavlink_ptz_status_t, tilt) }, \
-         { "zoom", NULL, MAVLINK_TYPE_UINT8_T, 0, 4, offsetof(mavlink_ptz_status_t, zoom) }, \
-         } \
-}
-#else
 #define MAVLINK_MESSAGE_INFO_PTZ_STATUS { \
 	"PTZ_STATUS", \
 	3, \
@@ -38,7 +25,7 @@ typedef struct MAVLINK_PACKED __mavlink_ptz_status_t
          { "zoom", NULL, MAVLINK_TYPE_UINT8_T, 0, 4, offsetof(mavlink_ptz_status_t, zoom) }, \
          } \
 }
-#endif
+
 
 /**
  * @brief Pack a ptz_status message
@@ -71,7 +58,11 @@ static inline uint16_t mavlink_msg_ptz_status_pack(uint8_t system_id, uint8_t co
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_PTZ_STATUS;
-    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_PTZ_STATUS_MIN_LEN, MAVLINK_MSG_ID_PTZ_STATUS_LEN, MAVLINK_MSG_ID_PTZ_STATUS_CRC);
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_PTZ_STATUS_LEN, MAVLINK_MSG_ID_PTZ_STATUS_CRC);
+#else
+    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_PTZ_STATUS_LEN);
+#endif
 }
 
 /**
@@ -106,7 +97,11 @@ static inline uint16_t mavlink_msg_ptz_status_pack_chan(uint8_t system_id, uint8
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_PTZ_STATUS;
-    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_PTZ_STATUS_MIN_LEN, MAVLINK_MSG_ID_PTZ_STATUS_LEN, MAVLINK_MSG_ID_PTZ_STATUS_CRC);
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_PTZ_STATUS_LEN, MAVLINK_MSG_ID_PTZ_STATUS_CRC);
+#else
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_PTZ_STATUS_LEN);
+#endif
 }
 
 /**
@@ -154,28 +149,22 @@ static inline void mavlink_msg_ptz_status_send(mavlink_channel_t chan, uint8_t z
 	_mav_put_int16_t(buf, 2, tilt);
 	_mav_put_uint8_t(buf, 4, zoom);
 
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PTZ_STATUS, buf, MAVLINK_MSG_ID_PTZ_STATUS_MIN_LEN, MAVLINK_MSG_ID_PTZ_STATUS_LEN, MAVLINK_MSG_ID_PTZ_STATUS_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PTZ_STATUS, buf, MAVLINK_MSG_ID_PTZ_STATUS_LEN, MAVLINK_MSG_ID_PTZ_STATUS_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PTZ_STATUS, buf, MAVLINK_MSG_ID_PTZ_STATUS_LEN);
+#endif
 #else
 	mavlink_ptz_status_t packet;
 	packet.pan = pan;
 	packet.tilt = tilt;
 	packet.zoom = zoom;
 
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PTZ_STATUS, (const char *)&packet, MAVLINK_MSG_ID_PTZ_STATUS_MIN_LEN, MAVLINK_MSG_ID_PTZ_STATUS_LEN, MAVLINK_MSG_ID_PTZ_STATUS_CRC);
-#endif
-}
-
-/**
- * @brief Send a ptz_status message
- * @param chan MAVLink channel to send the message
- * @param struct The MAVLink struct to serialize
- */
-static inline void mavlink_msg_ptz_status_send_struct(mavlink_channel_t chan, const mavlink_ptz_status_t* ptz_status)
-{
-#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_ptz_status_send(chan, ptz_status->zoom, ptz_status->pan, ptz_status->tilt);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PTZ_STATUS, (const char *)&packet, MAVLINK_MSG_ID_PTZ_STATUS_LEN, MAVLINK_MSG_ID_PTZ_STATUS_CRC);
 #else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PTZ_STATUS, (const char *)ptz_status, MAVLINK_MSG_ID_PTZ_STATUS_MIN_LEN, MAVLINK_MSG_ID_PTZ_STATUS_LEN, MAVLINK_MSG_ID_PTZ_STATUS_CRC);
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PTZ_STATUS, (const char *)&packet, MAVLINK_MSG_ID_PTZ_STATUS_LEN);
+#endif
 #endif
 }
 
@@ -195,14 +184,22 @@ static inline void mavlink_msg_ptz_status_send_buf(mavlink_message_t *msgbuf, ma
 	_mav_put_int16_t(buf, 2, tilt);
 	_mav_put_uint8_t(buf, 4, zoom);
 
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PTZ_STATUS, buf, MAVLINK_MSG_ID_PTZ_STATUS_MIN_LEN, MAVLINK_MSG_ID_PTZ_STATUS_LEN, MAVLINK_MSG_ID_PTZ_STATUS_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PTZ_STATUS, buf, MAVLINK_MSG_ID_PTZ_STATUS_LEN, MAVLINK_MSG_ID_PTZ_STATUS_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PTZ_STATUS, buf, MAVLINK_MSG_ID_PTZ_STATUS_LEN);
+#endif
 #else
 	mavlink_ptz_status_t *packet = (mavlink_ptz_status_t *)msgbuf;
 	packet->pan = pan;
 	packet->tilt = tilt;
 	packet->zoom = zoom;
 
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PTZ_STATUS, (const char *)packet, MAVLINK_MSG_ID_PTZ_STATUS_MIN_LEN, MAVLINK_MSG_ID_PTZ_STATUS_LEN, MAVLINK_MSG_ID_PTZ_STATUS_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PTZ_STATUS, (const char *)packet, MAVLINK_MSG_ID_PTZ_STATUS_LEN, MAVLINK_MSG_ID_PTZ_STATUS_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_PTZ_STATUS, (const char *)packet, MAVLINK_MSG_ID_PTZ_STATUS_LEN);
+#endif
 #endif
 }
 #endif
@@ -250,13 +247,11 @@ static inline int16_t mavlink_msg_ptz_status_get_tilt(const mavlink_message_t* m
  */
 static inline void mavlink_msg_ptz_status_decode(const mavlink_message_t* msg, mavlink_ptz_status_t* ptz_status)
 {
-#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+#if MAVLINK_NEED_BYTE_SWAP
 	ptz_status->pan = mavlink_msg_ptz_status_get_pan(msg);
 	ptz_status->tilt = mavlink_msg_ptz_status_get_tilt(msg);
 	ptz_status->zoom = mavlink_msg_ptz_status_get_zoom(msg);
 #else
-        uint8_t len = msg->len < MAVLINK_MSG_ID_PTZ_STATUS_LEN? msg->len : MAVLINK_MSG_ID_PTZ_STATUS_LEN;
-        memset(ptz_status, 0, MAVLINK_MSG_ID_PTZ_STATUS_LEN);
-	memcpy(ptz_status, _MAV_PAYLOAD(msg), len);
+	memcpy(ptz_status, _MAV_PAYLOAD(msg), MAVLINK_MSG_ID_PTZ_STATUS_LEN);
 #endif
 }

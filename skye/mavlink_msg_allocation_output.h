@@ -2,16 +2,14 @@
 
 #define MAVLINK_MSG_ID_ALLOCATION_OUTPUT 212
 
-typedef struct MAVLINK_PACKED __mavlink_allocation_output_t
+typedef struct __mavlink_allocation_output_t
 {
- float angle[6]; /*< Orientation motor setpoint of AUs [deg]*/
- float thrust[6]; /*< Thrust motor setpoint of AUs [N]*/
+ float angle[6]; ///< Orientation motor setpoint of AUs [deg]
+ float thrust[6]; ///< Thrust motor setpoint of AUs [N]
 } mavlink_allocation_output_t;
 
 #define MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN 48
-#define MAVLINK_MSG_ID_ALLOCATION_OUTPUT_MIN_LEN 48
 #define MAVLINK_MSG_ID_212_LEN 48
-#define MAVLINK_MSG_ID_212_MIN_LEN 48
 
 #define MAVLINK_MSG_ID_ALLOCATION_OUTPUT_CRC 233
 #define MAVLINK_MSG_ID_212_CRC 233
@@ -19,16 +17,6 @@ typedef struct MAVLINK_PACKED __mavlink_allocation_output_t
 #define MAVLINK_MSG_ALLOCATION_OUTPUT_FIELD_ANGLE_LEN 6
 #define MAVLINK_MSG_ALLOCATION_OUTPUT_FIELD_THRUST_LEN 6
 
-#if MAVLINK_COMMAND_24BIT
-#define MAVLINK_MESSAGE_INFO_ALLOCATION_OUTPUT { \
-	212, \
-	"ALLOCATION_OUTPUT", \
-	2, \
-	{  { "angle", NULL, MAVLINK_TYPE_FLOAT, 6, 0, offsetof(mavlink_allocation_output_t, angle) }, \
-         { "thrust", NULL, MAVLINK_TYPE_FLOAT, 6, 24, offsetof(mavlink_allocation_output_t, thrust) }, \
-         } \
-}
-#else
 #define MAVLINK_MESSAGE_INFO_ALLOCATION_OUTPUT { \
 	"ALLOCATION_OUTPUT", \
 	2, \
@@ -36,7 +24,7 @@ typedef struct MAVLINK_PACKED __mavlink_allocation_output_t
          { "thrust", NULL, MAVLINK_TYPE_FLOAT, 6, 24, offsetof(mavlink_allocation_output_t, thrust) }, \
          } \
 }
-#endif
+
 
 /**
  * @brief Pack a allocation_output message
@@ -66,7 +54,11 @@ static inline uint16_t mavlink_msg_allocation_output_pack(uint8_t system_id, uin
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_ALLOCATION_OUTPUT;
-    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_MIN_LEN, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_CRC);
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_CRC);
+#else
+    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN);
+#endif
 }
 
 /**
@@ -98,7 +90,11 @@ static inline uint16_t mavlink_msg_allocation_output_pack_chan(uint8_t system_id
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_ALLOCATION_OUTPUT;
-    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_MIN_LEN, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_CRC);
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_CRC);
+#else
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN);
+#endif
 }
 
 /**
@@ -144,27 +140,21 @@ static inline void mavlink_msg_allocation_output_send(mavlink_channel_t chan, co
 
 	_mav_put_float_array(buf, 0, angle, 6);
 	_mav_put_float_array(buf, 24, thrust, 6);
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ALLOCATION_OUTPUT, buf, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_MIN_LEN, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ALLOCATION_OUTPUT, buf, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ALLOCATION_OUTPUT, buf, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN);
+#endif
 #else
 	mavlink_allocation_output_t packet;
 
 	mav_array_memcpy(packet.angle, angle, sizeof(float)*6);
 	mav_array_memcpy(packet.thrust, thrust, sizeof(float)*6);
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ALLOCATION_OUTPUT, (const char *)&packet, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_MIN_LEN, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_CRC);
-#endif
-}
-
-/**
- * @brief Send a allocation_output message
- * @param chan MAVLink channel to send the message
- * @param struct The MAVLink struct to serialize
- */
-static inline void mavlink_msg_allocation_output_send_struct(mavlink_channel_t chan, const mavlink_allocation_output_t* allocation_output)
-{
-#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_allocation_output_send(chan, allocation_output->angle, allocation_output->thrust);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ALLOCATION_OUTPUT, (const char *)&packet, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_CRC);
 #else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ALLOCATION_OUTPUT, (const char *)allocation_output, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_MIN_LEN, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_CRC);
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ALLOCATION_OUTPUT, (const char *)&packet, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN);
+#endif
 #endif
 }
 
@@ -183,13 +173,21 @@ static inline void mavlink_msg_allocation_output_send_buf(mavlink_message_t *msg
 
 	_mav_put_float_array(buf, 0, angle, 6);
 	_mav_put_float_array(buf, 24, thrust, 6);
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ALLOCATION_OUTPUT, buf, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_MIN_LEN, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ALLOCATION_OUTPUT, buf, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ALLOCATION_OUTPUT, buf, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN);
+#endif
 #else
 	mavlink_allocation_output_t *packet = (mavlink_allocation_output_t *)msgbuf;
 
 	mav_array_memcpy(packet->angle, angle, sizeof(float)*6);
 	mav_array_memcpy(packet->thrust, thrust, sizeof(float)*6);
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ALLOCATION_OUTPUT, (const char *)packet, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_MIN_LEN, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ALLOCATION_OUTPUT, (const char *)packet, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ALLOCATION_OUTPUT, (const char *)packet, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN);
+#endif
 #endif
 }
 #endif
@@ -227,12 +225,10 @@ static inline uint16_t mavlink_msg_allocation_output_get_thrust(const mavlink_me
  */
 static inline void mavlink_msg_allocation_output_decode(const mavlink_message_t* msg, mavlink_allocation_output_t* allocation_output)
 {
-#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+#if MAVLINK_NEED_BYTE_SWAP
 	mavlink_msg_allocation_output_get_angle(msg, allocation_output->angle);
 	mavlink_msg_allocation_output_get_thrust(msg, allocation_output->thrust);
 #else
-        uint8_t len = msg->len < MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN? msg->len : MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN;
-        memset(allocation_output, 0, MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN);
-	memcpy(allocation_output, _MAV_PAYLOAD(msg), len);
+	memcpy(allocation_output, _MAV_PAYLOAD(msg), MAVLINK_MSG_ID_ALLOCATION_OUTPUT_LEN);
 #endif
 }
