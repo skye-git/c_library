@@ -2,18 +2,20 @@
 
 #define MAVLINK_MSG_ID_ACTUATION_CONFIGURATION 201
 
-typedef struct __mavlink_actuation_configuration_t
-{
- float quat_au1[4]; ///< Quaternion q_BM that describes rotation of AU 1 towards UAV
- float quat_au2[4]; ///< Quaternion q_BM that describes rotation of AU 2 towards UAV
- float quat_au3[4]; ///< Quaternion q_BM that describes rotation of AU 3 towards UAV
- float quat_au4[4]; ///< Quaternion q_BM that describes rotation of AU 4 towards UAV
- float quat_au5[4]; ///< Quaternion q_BM that describes rotation of AU 5 towards UAV
- float quat_au6[4]; ///< Quaternion q_BM that describes rotation of AU 6 towards UAV
-} mavlink_actuation_configuration_t;
+MAVPACKED(
+typedef struct __mavlink_actuation_configuration_t {
+ float quat_au1[4]; /*< Quaternion q_BM that describes rotation of AU 1 towards UAV*/
+ float quat_au2[4]; /*< Quaternion q_BM that describes rotation of AU 2 towards UAV*/
+ float quat_au3[4]; /*< Quaternion q_BM that describes rotation of AU 3 towards UAV*/
+ float quat_au4[4]; /*< Quaternion q_BM that describes rotation of AU 4 towards UAV*/
+ float quat_au5[4]; /*< Quaternion q_BM that describes rotation of AU 5 towards UAV*/
+ float quat_au6[4]; /*< Quaternion q_BM that describes rotation of AU 6 towards UAV*/
+}) mavlink_actuation_configuration_t;
 
 #define MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN 96
+#define MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_MIN_LEN 96
 #define MAVLINK_MSG_ID_201_LEN 96
+#define MAVLINK_MSG_ID_201_MIN_LEN 96
 
 #define MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_CRC 50
 #define MAVLINK_MSG_ID_201_CRC 50
@@ -25,6 +27,20 @@ typedef struct __mavlink_actuation_configuration_t
 #define MAVLINK_MSG_ACTUATION_CONFIGURATION_FIELD_QUAT_AU5_LEN 4
 #define MAVLINK_MSG_ACTUATION_CONFIGURATION_FIELD_QUAT_AU6_LEN 4
 
+#if MAVLINK_COMMAND_24BIT
+#define MAVLINK_MESSAGE_INFO_ACTUATION_CONFIGURATION { \
+	201, \
+	"ACTUATION_CONFIGURATION", \
+	6, \
+	{  { "quat_au1", NULL, MAVLINK_TYPE_FLOAT, 4, 0, offsetof(mavlink_actuation_configuration_t, quat_au1) }, \
+         { "quat_au2", NULL, MAVLINK_TYPE_FLOAT, 4, 16, offsetof(mavlink_actuation_configuration_t, quat_au2) }, \
+         { "quat_au3", NULL, MAVLINK_TYPE_FLOAT, 4, 32, offsetof(mavlink_actuation_configuration_t, quat_au3) }, \
+         { "quat_au4", NULL, MAVLINK_TYPE_FLOAT, 4, 48, offsetof(mavlink_actuation_configuration_t, quat_au4) }, \
+         { "quat_au5", NULL, MAVLINK_TYPE_FLOAT, 4, 64, offsetof(mavlink_actuation_configuration_t, quat_au5) }, \
+         { "quat_au6", NULL, MAVLINK_TYPE_FLOAT, 4, 80, offsetof(mavlink_actuation_configuration_t, quat_au6) }, \
+         } \
+}
+#else
 #define MAVLINK_MESSAGE_INFO_ACTUATION_CONFIGURATION { \
 	"ACTUATION_CONFIGURATION", \
 	6, \
@@ -36,7 +52,7 @@ typedef struct __mavlink_actuation_configuration_t
          { "quat_au6", NULL, MAVLINK_TYPE_FLOAT, 4, 80, offsetof(mavlink_actuation_configuration_t, quat_au6) }, \
          } \
 }
-
+#endif
 
 /**
  * @brief Pack a actuation_configuration message
@@ -78,11 +94,7 @@ static inline uint16_t mavlink_msg_actuation_configuration_pack(uint8_t system_i
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_ACTUATION_CONFIGURATION;
-#if MAVLINK_CRC_EXTRA
-    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_CRC);
-#else
-    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN);
-#endif
+    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_MIN_LEN, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_CRC);
 }
 
 /**
@@ -126,11 +138,7 @@ static inline uint16_t mavlink_msg_actuation_configuration_pack_chan(uint8_t sys
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_ACTUATION_CONFIGURATION;
-#if MAVLINK_CRC_EXTRA
-    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_CRC);
-#else
-    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN);
-#endif
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_MIN_LEN, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_CRC);
 }
 
 /**
@@ -184,11 +192,7 @@ static inline void mavlink_msg_actuation_configuration_send(mavlink_channel_t ch
 	_mav_put_float_array(buf, 48, quat_au4, 4);
 	_mav_put_float_array(buf, 64, quat_au5, 4);
 	_mav_put_float_array(buf, 80, quat_au6, 4);
-#if MAVLINK_CRC_EXTRA
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION, buf, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_CRC);
-#else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION, buf, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN);
-#endif
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION, buf, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_MIN_LEN, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_CRC);
 #else
 	mavlink_actuation_configuration_t packet;
 
@@ -198,11 +202,21 @@ static inline void mavlink_msg_actuation_configuration_send(mavlink_channel_t ch
 	mav_array_memcpy(packet.quat_au4, quat_au4, sizeof(float)*4);
 	mav_array_memcpy(packet.quat_au5, quat_au5, sizeof(float)*4);
 	mav_array_memcpy(packet.quat_au6, quat_au6, sizeof(float)*4);
-#if MAVLINK_CRC_EXTRA
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION, (const char *)&packet, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_CRC);
-#else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION, (const char *)&packet, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN);
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION, (const char *)&packet, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_MIN_LEN, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_CRC);
 #endif
+}
+
+/**
+ * @brief Send a actuation_configuration message
+ * @param chan MAVLink channel to send the message
+ * @param struct The MAVLink struct to serialize
+ */
+static inline void mavlink_msg_actuation_configuration_send_struct(mavlink_channel_t chan, const mavlink_actuation_configuration_t* actuation_configuration)
+{
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+    mavlink_msg_actuation_configuration_send(chan, actuation_configuration->quat_au1, actuation_configuration->quat_au2, actuation_configuration->quat_au3, actuation_configuration->quat_au4, actuation_configuration->quat_au5, actuation_configuration->quat_au6);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION, (const char *)actuation_configuration, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_MIN_LEN, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_CRC);
 #endif
 }
 
@@ -225,11 +239,7 @@ static inline void mavlink_msg_actuation_configuration_send_buf(mavlink_message_
 	_mav_put_float_array(buf, 48, quat_au4, 4);
 	_mav_put_float_array(buf, 64, quat_au5, 4);
 	_mav_put_float_array(buf, 80, quat_au6, 4);
-#if MAVLINK_CRC_EXTRA
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION, buf, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_CRC);
-#else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION, buf, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN);
-#endif
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION, buf, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_MIN_LEN, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_CRC);
 #else
 	mavlink_actuation_configuration_t *packet = (mavlink_actuation_configuration_t *)msgbuf;
 
@@ -239,11 +249,7 @@ static inline void mavlink_msg_actuation_configuration_send_buf(mavlink_message_
 	mav_array_memcpy(packet->quat_au4, quat_au4, sizeof(float)*4);
 	mav_array_memcpy(packet->quat_au5, quat_au5, sizeof(float)*4);
 	mav_array_memcpy(packet->quat_au6, quat_au6, sizeof(float)*4);
-#if MAVLINK_CRC_EXTRA
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION, (const char *)packet, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_CRC);
-#else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION, (const char *)packet, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN);
-#endif
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION, (const char *)packet, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_MIN_LEN, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_CRC);
 #endif
 }
 #endif
@@ -321,7 +327,7 @@ static inline uint16_t mavlink_msg_actuation_configuration_get_quat_au6(const ma
  */
 static inline void mavlink_msg_actuation_configuration_decode(const mavlink_message_t* msg, mavlink_actuation_configuration_t* actuation_configuration)
 {
-#if MAVLINK_NEED_BYTE_SWAP
+#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
 	mavlink_msg_actuation_configuration_get_quat_au1(msg, actuation_configuration->quat_au1);
 	mavlink_msg_actuation_configuration_get_quat_au2(msg, actuation_configuration->quat_au2);
 	mavlink_msg_actuation_configuration_get_quat_au3(msg, actuation_configuration->quat_au3);
@@ -329,6 +335,8 @@ static inline void mavlink_msg_actuation_configuration_decode(const mavlink_mess
 	mavlink_msg_actuation_configuration_get_quat_au5(msg, actuation_configuration->quat_au5);
 	mavlink_msg_actuation_configuration_get_quat_au6(msg, actuation_configuration->quat_au6);
 #else
-	memcpy(actuation_configuration, _MAV_PAYLOAD(msg), MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN);
+        uint8_t len = msg->len < MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN? msg->len : MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN;
+        memset(actuation_configuration, 0, MAVLINK_MSG_ID_ACTUATION_CONFIGURATION_LEN);
+	memcpy(actuation_configuration, _MAV_PAYLOAD(msg), len);
 #endif
 }
