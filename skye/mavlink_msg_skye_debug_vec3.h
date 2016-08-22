@@ -2,36 +2,22 @@
 
 #define MAVLINK_MSG_ID_SKYE_DEBUG_VEC3 225
 
-MAVPACKED(
-typedef struct __mavlink_skye_debug_vec3_t {
- uint64_t timestamp; /*< Unix time*/
- float x; /*< X*/
- float y; /*< Y*/
- float z; /*< Z*/
-}) mavlink_skye_debug_vec3_t;
+typedef struct __mavlink_skye_debug_vec3_t
+{
+ uint64_t timestamp; ///< Unix time
+ float x; ///< X
+ float y; ///< Y
+ float z; ///< Z
+} mavlink_skye_debug_vec3_t;
 
 #define MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN 20
-#define MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_MIN_LEN 20
 #define MAVLINK_MSG_ID_225_LEN 20
-#define MAVLINK_MSG_ID_225_MIN_LEN 20
 
 #define MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_CRC 12
 #define MAVLINK_MSG_ID_225_CRC 12
 
 
 
-#if MAVLINK_COMMAND_24BIT
-#define MAVLINK_MESSAGE_INFO_SKYE_DEBUG_VEC3 { \
-	225, \
-	"SKYE_DEBUG_VEC3", \
-	4, \
-	{  { "timestamp", NULL, MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_skye_debug_vec3_t, timestamp) }, \
-         { "x", NULL, MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_skye_debug_vec3_t, x) }, \
-         { "y", NULL, MAVLINK_TYPE_FLOAT, 0, 12, offsetof(mavlink_skye_debug_vec3_t, y) }, \
-         { "z", NULL, MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_skye_debug_vec3_t, z) }, \
-         } \
-}
-#else
 #define MAVLINK_MESSAGE_INFO_SKYE_DEBUG_VEC3 { \
 	"SKYE_DEBUG_VEC3", \
 	4, \
@@ -41,7 +27,7 @@ typedef struct __mavlink_skye_debug_vec3_t {
          { "z", NULL, MAVLINK_TYPE_FLOAT, 0, 16, offsetof(mavlink_skye_debug_vec3_t, z) }, \
          } \
 }
-#endif
+
 
 /**
  * @brief Pack a skye_debug_vec3 message
@@ -77,7 +63,11 @@ static inline uint16_t mavlink_msg_skye_debug_vec3_pack(uint8_t system_id, uint8
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_SKYE_DEBUG_VEC3;
-    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_MIN_LEN, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_CRC);
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_CRC);
+#else
+    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN);
+#endif
 }
 
 /**
@@ -115,7 +105,11 @@ static inline uint16_t mavlink_msg_skye_debug_vec3_pack_chan(uint8_t system_id, 
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_SKYE_DEBUG_VEC3;
-    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_MIN_LEN, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_CRC);
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_CRC);
+#else
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN);
+#endif
 }
 
 /**
@@ -165,7 +159,11 @@ static inline void mavlink_msg_skye_debug_vec3_send(mavlink_channel_t chan, uint
 	_mav_put_float(buf, 12, y);
 	_mav_put_float(buf, 16, z);
 
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3, buf, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_MIN_LEN, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3, buf, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3, buf, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN);
+#endif
 #else
 	mavlink_skye_debug_vec3_t packet;
 	packet.timestamp = timestamp;
@@ -173,21 +171,11 @@ static inline void mavlink_msg_skye_debug_vec3_send(mavlink_channel_t chan, uint
 	packet.y = y;
 	packet.z = z;
 
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3, (const char *)&packet, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_MIN_LEN, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_CRC);
-#endif
-}
-
-/**
- * @brief Send a skye_debug_vec3 message
- * @param chan MAVLink channel to send the message
- * @param struct The MAVLink struct to serialize
- */
-static inline void mavlink_msg_skye_debug_vec3_send_struct(mavlink_channel_t chan, const mavlink_skye_debug_vec3_t* skye_debug_vec3)
-{
-#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_skye_debug_vec3_send(chan, skye_debug_vec3->timestamp, skye_debug_vec3->x, skye_debug_vec3->y, skye_debug_vec3->z);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3, (const char *)&packet, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_CRC);
 #else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3, (const char *)skye_debug_vec3, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_MIN_LEN, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_CRC);
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3, (const char *)&packet, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN);
+#endif
 #endif
 }
 
@@ -208,7 +196,11 @@ static inline void mavlink_msg_skye_debug_vec3_send_buf(mavlink_message_t *msgbu
 	_mav_put_float(buf, 12, y);
 	_mav_put_float(buf, 16, z);
 
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3, buf, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_MIN_LEN, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3, buf, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3, buf, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN);
+#endif
 #else
 	mavlink_skye_debug_vec3_t *packet = (mavlink_skye_debug_vec3_t *)msgbuf;
 	packet->timestamp = timestamp;
@@ -216,7 +208,11 @@ static inline void mavlink_msg_skye_debug_vec3_send_buf(mavlink_message_t *msgbu
 	packet->y = y;
 	packet->z = z;
 
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3, (const char *)packet, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_MIN_LEN, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3, (const char *)packet, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3, (const char *)packet, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN);
+#endif
 #endif
 }
 #endif
@@ -274,14 +270,12 @@ static inline float mavlink_msg_skye_debug_vec3_get_z(const mavlink_message_t* m
  */
 static inline void mavlink_msg_skye_debug_vec3_decode(const mavlink_message_t* msg, mavlink_skye_debug_vec3_t* skye_debug_vec3)
 {
-#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+#if MAVLINK_NEED_BYTE_SWAP
 	skye_debug_vec3->timestamp = mavlink_msg_skye_debug_vec3_get_timestamp(msg);
 	skye_debug_vec3->x = mavlink_msg_skye_debug_vec3_get_x(msg);
 	skye_debug_vec3->y = mavlink_msg_skye_debug_vec3_get_y(msg);
 	skye_debug_vec3->z = mavlink_msg_skye_debug_vec3_get_z(msg);
 #else
-        uint8_t len = msg->len < MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN? msg->len : MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN;
-        memset(skye_debug_vec3, 0, MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN);
-	memcpy(skye_debug_vec3, _MAV_PAYLOAD(msg), len);
+	memcpy(skye_debug_vec3, _MAV_PAYLOAD(msg), MAVLINK_MSG_ID_SKYE_DEBUG_VEC3_LEN);
 #endif
 }

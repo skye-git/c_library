@@ -2,22 +2,20 @@
 
 #define MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED 214
 
-MAVPACKED(
-typedef struct __mavlink_skye_feedback_combined_t {
- uint64_t timestamp; /*< Onboard time*/
- float omega_raw[3]; /*< Raw angular velocity. IMU frame. rad/sec*/
- float accel_raw[3]; /*< Raw acceleration. IMU frame. m/s2*/
- float alpha_ekf[3]; /*< Filtered angular acceleration. IMU frame. rad/sec*/
- float omega_ekf[3]; /*< Filtered angular velocity. IMU frame. rad/sec*/
- float quat_ekf[4]; /*< Filtered Orientation. IMU frame. rad/sec*/
- float thrust[6]; /*< Thrust estimate of actuation units in Newton*/
- float angle[6]; /*< Orientation readout of actuation units in Degree*/
-}) mavlink_skye_feedback_combined_t;
+typedef struct __mavlink_skye_feedback_combined_t
+{
+ uint64_t timestamp; ///< Onboard time
+ float omega_raw[3]; ///< Raw angular velocity. IMU frame. rad/sec
+ float accel_raw[3]; ///< Raw acceleration. IMU frame. m/s2
+ float alpha_ekf[3]; ///< Filtered angular acceleration. IMU frame. rad/sec
+ float omega_ekf[3]; ///< Filtered angular velocity. IMU frame. rad/sec
+ float quat_ekf[4]; ///< Filtered Orientation. IMU frame. rad/sec
+ float thrust[6]; ///< Thrust estimate of actuation units in Newton
+ float angle[6]; ///< Orientation readout of actuation units in Degree
+} mavlink_skye_feedback_combined_t;
 
 #define MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN 120
-#define MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_MIN_LEN 120
 #define MAVLINK_MSG_ID_214_LEN 120
-#define MAVLINK_MSG_ID_214_MIN_LEN 120
 
 #define MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_CRC 78
 #define MAVLINK_MSG_ID_214_CRC 78
@@ -30,22 +28,6 @@ typedef struct __mavlink_skye_feedback_combined_t {
 #define MAVLINK_MSG_SKYE_FEEDBACK_COMBINED_FIELD_THRUST_LEN 6
 #define MAVLINK_MSG_SKYE_FEEDBACK_COMBINED_FIELD_ANGLE_LEN 6
 
-#if MAVLINK_COMMAND_24BIT
-#define MAVLINK_MESSAGE_INFO_SKYE_FEEDBACK_COMBINED { \
-	214, \
-	"SKYE_FEEDBACK_COMBINED", \
-	8, \
-	{  { "timestamp", NULL, MAVLINK_TYPE_UINT64_T, 0, 0, offsetof(mavlink_skye_feedback_combined_t, timestamp) }, \
-         { "omega_raw", NULL, MAVLINK_TYPE_FLOAT, 3, 8, offsetof(mavlink_skye_feedback_combined_t, omega_raw) }, \
-         { "accel_raw", NULL, MAVLINK_TYPE_FLOAT, 3, 20, offsetof(mavlink_skye_feedback_combined_t, accel_raw) }, \
-         { "alpha_ekf", NULL, MAVLINK_TYPE_FLOAT, 3, 32, offsetof(mavlink_skye_feedback_combined_t, alpha_ekf) }, \
-         { "omega_ekf", NULL, MAVLINK_TYPE_FLOAT, 3, 44, offsetof(mavlink_skye_feedback_combined_t, omega_ekf) }, \
-         { "quat_ekf", NULL, MAVLINK_TYPE_FLOAT, 4, 56, offsetof(mavlink_skye_feedback_combined_t, quat_ekf) }, \
-         { "thrust", NULL, MAVLINK_TYPE_FLOAT, 6, 72, offsetof(mavlink_skye_feedback_combined_t, thrust) }, \
-         { "angle", NULL, MAVLINK_TYPE_FLOAT, 6, 96, offsetof(mavlink_skye_feedback_combined_t, angle) }, \
-         } \
-}
-#else
 #define MAVLINK_MESSAGE_INFO_SKYE_FEEDBACK_COMBINED { \
 	"SKYE_FEEDBACK_COMBINED", \
 	8, \
@@ -59,7 +41,7 @@ typedef struct __mavlink_skye_feedback_combined_t {
          { "angle", NULL, MAVLINK_TYPE_FLOAT, 6, 96, offsetof(mavlink_skye_feedback_combined_t, angle) }, \
          } \
 }
-#endif
+
 
 /**
  * @brief Pack a skye_feedback_combined message
@@ -105,7 +87,11 @@ static inline uint16_t mavlink_msg_skye_feedback_combined_pack(uint8_t system_id
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED;
-    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_MIN_LEN, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_CRC);
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_CRC);
+#else
+    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN);
+#endif
 }
 
 /**
@@ -153,7 +139,11 @@ static inline uint16_t mavlink_msg_skye_feedback_combined_pack_chan(uint8_t syst
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED;
-    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_MIN_LEN, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_CRC);
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_CRC);
+#else
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN);
+#endif
 }
 
 /**
@@ -210,7 +200,11 @@ static inline void mavlink_msg_skye_feedback_combined_send(mavlink_channel_t cha
 	_mav_put_float_array(buf, 56, quat_ekf, 4);
 	_mav_put_float_array(buf, 72, thrust, 6);
 	_mav_put_float_array(buf, 96, angle, 6);
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED, buf, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_MIN_LEN, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED, buf, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED, buf, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN);
+#endif
 #else
 	mavlink_skye_feedback_combined_t packet;
 	packet.timestamp = timestamp;
@@ -221,21 +215,11 @@ static inline void mavlink_msg_skye_feedback_combined_send(mavlink_channel_t cha
 	mav_array_memcpy(packet.quat_ekf, quat_ekf, sizeof(float)*4);
 	mav_array_memcpy(packet.thrust, thrust, sizeof(float)*6);
 	mav_array_memcpy(packet.angle, angle, sizeof(float)*6);
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED, (const char *)&packet, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_MIN_LEN, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_CRC);
-#endif
-}
-
-/**
- * @brief Send a skye_feedback_combined message
- * @param chan MAVLink channel to send the message
- * @param struct The MAVLink struct to serialize
- */
-static inline void mavlink_msg_skye_feedback_combined_send_struct(mavlink_channel_t chan, const mavlink_skye_feedback_combined_t* skye_feedback_combined)
-{
-#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_skye_feedback_combined_send(chan, skye_feedback_combined->timestamp, skye_feedback_combined->omega_raw, skye_feedback_combined->accel_raw, skye_feedback_combined->alpha_ekf, skye_feedback_combined->omega_ekf, skye_feedback_combined->quat_ekf, skye_feedback_combined->thrust, skye_feedback_combined->angle);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED, (const char *)&packet, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_CRC);
 #else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED, (const char *)skye_feedback_combined, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_MIN_LEN, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_CRC);
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED, (const char *)&packet, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN);
+#endif
 #endif
 }
 
@@ -259,7 +243,11 @@ static inline void mavlink_msg_skye_feedback_combined_send_buf(mavlink_message_t
 	_mav_put_float_array(buf, 56, quat_ekf, 4);
 	_mav_put_float_array(buf, 72, thrust, 6);
 	_mav_put_float_array(buf, 96, angle, 6);
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED, buf, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_MIN_LEN, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED, buf, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED, buf, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN);
+#endif
 #else
 	mavlink_skye_feedback_combined_t *packet = (mavlink_skye_feedback_combined_t *)msgbuf;
 	packet->timestamp = timestamp;
@@ -270,7 +258,11 @@ static inline void mavlink_msg_skye_feedback_combined_send_buf(mavlink_message_t
 	mav_array_memcpy(packet->quat_ekf, quat_ekf, sizeof(float)*4);
 	mav_array_memcpy(packet->thrust, thrust, sizeof(float)*6);
 	mav_array_memcpy(packet->angle, angle, sizeof(float)*6);
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED, (const char *)packet, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_MIN_LEN, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED, (const char *)packet, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED, (const char *)packet, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN);
+#endif
 #endif
 }
 #endif
@@ -368,7 +360,7 @@ static inline uint16_t mavlink_msg_skye_feedback_combined_get_angle(const mavlin
  */
 static inline void mavlink_msg_skye_feedback_combined_decode(const mavlink_message_t* msg, mavlink_skye_feedback_combined_t* skye_feedback_combined)
 {
-#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+#if MAVLINK_NEED_BYTE_SWAP
 	skye_feedback_combined->timestamp = mavlink_msg_skye_feedback_combined_get_timestamp(msg);
 	mavlink_msg_skye_feedback_combined_get_omega_raw(msg, skye_feedback_combined->omega_raw);
 	mavlink_msg_skye_feedback_combined_get_accel_raw(msg, skye_feedback_combined->accel_raw);
@@ -378,8 +370,6 @@ static inline void mavlink_msg_skye_feedback_combined_decode(const mavlink_messa
 	mavlink_msg_skye_feedback_combined_get_thrust(msg, skye_feedback_combined->thrust);
 	mavlink_msg_skye_feedback_combined_get_angle(msg, skye_feedback_combined->angle);
 #else
-        uint8_t len = msg->len < MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN? msg->len : MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN;
-        memset(skye_feedback_combined, 0, MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN);
-	memcpy(skye_feedback_combined, _MAV_PAYLOAD(msg), len);
+	memcpy(skye_feedback_combined, _MAV_PAYLOAD(msg), MAVLINK_MSG_ID_SKYE_FEEDBACK_COMBINED_LEN);
 #endif
 }

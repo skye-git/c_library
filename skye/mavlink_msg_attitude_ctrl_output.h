@@ -2,34 +2,21 @@
 
 #define MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT 211
 
-MAVPACKED(
-typedef struct __mavlink_attitude_ctrl_output_t {
- float M_x; /*< Moment around x axis [Nm]*/
- float M_y; /*< Moment around y axis [Nm]*/
- float M_z; /*< Moment around z axis [Nm]*/
-}) mavlink_attitude_ctrl_output_t;
+typedef struct __mavlink_attitude_ctrl_output_t
+{
+ float M_x; ///< Moment around x axis [Nm]
+ float M_y; ///< Moment around y axis [Nm]
+ float M_z; ///< Moment around z axis [Nm]
+} mavlink_attitude_ctrl_output_t;
 
 #define MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN 12
-#define MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_MIN_LEN 12
 #define MAVLINK_MSG_ID_211_LEN 12
-#define MAVLINK_MSG_ID_211_MIN_LEN 12
 
 #define MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_CRC 17
 #define MAVLINK_MSG_ID_211_CRC 17
 
 
 
-#if MAVLINK_COMMAND_24BIT
-#define MAVLINK_MESSAGE_INFO_ATTITUDE_CTRL_OUTPUT { \
-	211, \
-	"ATTITUDE_CTRL_OUTPUT", \
-	3, \
-	{  { "M_x", NULL, MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_attitude_ctrl_output_t, M_x) }, \
-         { "M_y", NULL, MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_attitude_ctrl_output_t, M_y) }, \
-         { "M_z", NULL, MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_attitude_ctrl_output_t, M_z) }, \
-         } \
-}
-#else
 #define MAVLINK_MESSAGE_INFO_ATTITUDE_CTRL_OUTPUT { \
 	"ATTITUDE_CTRL_OUTPUT", \
 	3, \
@@ -38,7 +25,7 @@ typedef struct __mavlink_attitude_ctrl_output_t {
          { "M_z", NULL, MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_attitude_ctrl_output_t, M_z) }, \
          } \
 }
-#endif
+
 
 /**
  * @brief Pack a attitude_ctrl_output message
@@ -71,7 +58,11 @@ static inline uint16_t mavlink_msg_attitude_ctrl_output_pack(uint8_t system_id, 
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT;
-    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_MIN_LEN, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_CRC);
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_CRC);
+#else
+    return mavlink_finalize_message(msg, system_id, component_id, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN);
+#endif
 }
 
 /**
@@ -106,7 +97,11 @@ static inline uint16_t mavlink_msg_attitude_ctrl_output_pack_chan(uint8_t system
 #endif
 
 	msg->msgid = MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT;
-    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_MIN_LEN, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_CRC);
+#if MAVLINK_CRC_EXTRA
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_CRC);
+#else
+    return mavlink_finalize_message_chan(msg, system_id, component_id, chan, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN);
+#endif
 }
 
 /**
@@ -154,28 +149,22 @@ static inline void mavlink_msg_attitude_ctrl_output_send(mavlink_channel_t chan,
 	_mav_put_float(buf, 4, M_y);
 	_mav_put_float(buf, 8, M_z);
 
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT, buf, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_MIN_LEN, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT, buf, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT, buf, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN);
+#endif
 #else
 	mavlink_attitude_ctrl_output_t packet;
 	packet.M_x = M_x;
 	packet.M_y = M_y;
 	packet.M_z = M_z;
 
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT, (const char *)&packet, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_MIN_LEN, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_CRC);
-#endif
-}
-
-/**
- * @brief Send a attitude_ctrl_output message
- * @param chan MAVLink channel to send the message
- * @param struct The MAVLink struct to serialize
- */
-static inline void mavlink_msg_attitude_ctrl_output_send_struct(mavlink_channel_t chan, const mavlink_attitude_ctrl_output_t* attitude_ctrl_output)
-{
-#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_attitude_ctrl_output_send(chan, attitude_ctrl_output->M_x, attitude_ctrl_output->M_y, attitude_ctrl_output->M_z);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT, (const char *)&packet, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_CRC);
 #else
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT, (const char *)attitude_ctrl_output, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_MIN_LEN, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_CRC);
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT, (const char *)&packet, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN);
+#endif
 #endif
 }
 
@@ -195,14 +184,22 @@ static inline void mavlink_msg_attitude_ctrl_output_send_buf(mavlink_message_t *
 	_mav_put_float(buf, 4, M_y);
 	_mav_put_float(buf, 8, M_z);
 
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT, buf, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_MIN_LEN, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT, buf, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT, buf, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN);
+#endif
 #else
 	mavlink_attitude_ctrl_output_t *packet = (mavlink_attitude_ctrl_output_t *)msgbuf;
 	packet->M_x = M_x;
 	packet->M_y = M_y;
 	packet->M_z = M_z;
 
-    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT, (const char *)packet, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_MIN_LEN, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_CRC);
+#if MAVLINK_CRC_EXTRA
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT, (const char *)packet, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_CRC);
+#else
+    _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT, (const char *)packet, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN);
+#endif
 #endif
 }
 #endif
@@ -250,13 +247,11 @@ static inline float mavlink_msg_attitude_ctrl_output_get_M_z(const mavlink_messa
  */
 static inline void mavlink_msg_attitude_ctrl_output_decode(const mavlink_message_t* msg, mavlink_attitude_ctrl_output_t* attitude_ctrl_output)
 {
-#if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
+#if MAVLINK_NEED_BYTE_SWAP
 	attitude_ctrl_output->M_x = mavlink_msg_attitude_ctrl_output_get_M_x(msg);
 	attitude_ctrl_output->M_y = mavlink_msg_attitude_ctrl_output_get_M_y(msg);
 	attitude_ctrl_output->M_z = mavlink_msg_attitude_ctrl_output_get_M_z(msg);
 #else
-        uint8_t len = msg->len < MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN? msg->len : MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN;
-        memset(attitude_ctrl_output, 0, MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN);
-	memcpy(attitude_ctrl_output, _MAV_PAYLOAD(msg), len);
+	memcpy(attitude_ctrl_output, _MAV_PAYLOAD(msg), MAVLINK_MSG_ID_ATTITUDE_CTRL_OUTPUT_LEN);
 #endif
 }
