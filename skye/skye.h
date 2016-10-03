@@ -121,6 +121,7 @@ typedef enum MAV_CMD
                    |Radius of desired circle in CIRCLE_MODE| User defined| User defined| User defined| Unscaled target latitude of center of circle in CIRCLE_MODE| Unscaled target longitude of center of circle in CIRCLE_MODE|  */
 	MAV_CMD_SKYE_RESET_AU=10001, /* Request the reset of an actuation unit component (see MAV_COMP_ID_SERVO) |0: do nothing, 1: reset| Empty| Empty| Empty| Empty| Empty| Empty|  */
 	MAV_CMD_SET_SKYE_CONTROL_MODE=10002, /* Set Skye control mode parameter. TODO: Separate stabilisation from input interpretation |0: manual, 1: stab 5DOF, 2: stab 5DOF. See enum SKYE_CONTROL_MODE| Empty| Empty| Empty| Empty| Empty| Empty|  */
+	MAV_CMD_SKYE_LOG_EVENT=10003, /* Prompts Skye to write a log file with the current timestamp and session number |0: yaw step, 1: yaw drift, 2: AU Shutdown, 3: other. See enum SKYE_LOG_EVENT_MODE| Empty| Empty| Empty| Empty| Empty| Empty|  */
 	MAV_CMD_PAYLOAD_PREPARE_DEPLOY=30001, /* Deploy payload on a Lat / Lon / Alt position. This includes the navigation to reach the required release position and velocity. |Operation mode. 0: prepare single payload deploy (overwriting previous requests), but do not execute it. 1: execute payload deploy immediately (rejecting further deploy commands during execution, but allowing abort). 2: add payload deploy to existing deployment list.| Desired approach vector in degrees compass heading (0..360). A negative value indicates the system can define the approach vector at will.| Desired ground speed at release time. This can be overriden by the airframe in case it needs to meet minimum airspeed. A negative value indicates the system can define the ground speed at will.| Minimum altitude clearance to the release position in meters. A negative value indicates the system can define the clearance at will.| Latitude unscaled for MISSION_ITEM or in 1e7 degrees for MISSION_ITEM_INT| Longitude unscaled for MISSION_ITEM or in 1e7 degrees for MISSION_ITEM_INT| Altitude, in meters AMSL|  */
 	MAV_CMD_PAYLOAD_CONTROL_DEPLOY=30002, /* Control the payload deployment. |Operation mode. 0: Abort deployment, continue normal mission. 1: switch to payload deploment mode. 100: delete first payload deployment request. 101: delete all payload deployment requests.| Reserved| Reserved| Reserved| Reserved| Reserved| Reserved|  */
 	MAV_CMD_WAYPOINT_USER_1=31000, /* User defined waypoint item. Ground Station will show the Vehicle as flying through this item. |User defined| User defined| User defined| User defined| Latitude unscaled| Longitude unscaled| Altitude, in meters AMSL|  */
@@ -242,6 +243,19 @@ typedef enum SKYE_HIL_CONFIG
 	SKYE_HIL_ON_AND_LOW_ALLOCATOR_OUTPUT_STREAM=2, /* Enable HIL and stream allocation output at low rate. | */
 	SKYE_HIL_CONFIG_ENUM_END=3, /*  | */
 } SKYE_HIL_CONFIG;
+#endif
+
+/** @brief Describes the type of event that is logged */
+#ifndef HAVE_ENUM_SKYE_LOG_EVENT_MODE
+#define HAVE_ENUM_SKYE_LOG_EVENT_MODE
+typedef enum SKYE_LOG_EVENT_MODE
+{
+	SKYE_LOG_EVENT_YAW_STEP=0, /* The blimp makes a step in the attitude without the user giving an input. | */
+	SKYE_LOG_EVENT_YAW_DRIFT=1, /* The blimp slowly drifts in yaw direction without user input | */
+	SKYE_LOG_EVENT_AU_SHUTDOWN=2, /* An unexpected and remarkable event happend which needs to be futher inspected | */
+	SKYE_LOG_EVENT_OTHER=3, /* An unexpected and remarkable event happend which needs to be futher inspected | */
+	SKYE_LOG_EVENT_MODE_ENUM_END=4, /*  | */
+} SKYE_LOG_EVENT_MODE;
 #endif
 
 // MAVLINK VERSION
