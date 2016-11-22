@@ -676,14 +676,13 @@ static void mavlink_test_setpoint_2dof_id(uint8_t system_id, uint8_t component_i
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
 	mavlink_setpoint_2dof_id_t packet_in = {
-		17.0,45.0,29,96
+		17.0,45.0,29
     };
 	mavlink_setpoint_2dof_id_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
         packet1.angle = packet_in.angle;
         packet1.thrust = packet_in.thrust;
         packet1.id = packet_in.id;
-        packet1.thrust_unit = packet_in.thrust_unit;
         
         
 #ifdef MAVLINK_STATUS_FLAG_OUT_MAVLINK1
@@ -698,12 +697,12 @@ static void mavlink_test_setpoint_2dof_id(uint8_t system_id, uint8_t component_i
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_setpoint_2dof_id_pack(system_id, component_id, &msg , packet1.id , packet1.thrust_unit , packet1.angle , packet1.thrust );
+	mavlink_msg_setpoint_2dof_id_pack(system_id, component_id, &msg , packet1.id , packet1.angle , packet1.thrust );
 	mavlink_msg_setpoint_2dof_id_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_setpoint_2dof_id_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.id , packet1.thrust_unit , packet1.angle , packet1.thrust );
+	mavlink_msg_setpoint_2dof_id_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.id , packet1.angle , packet1.thrust );
 	mavlink_msg_setpoint_2dof_id_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -716,7 +715,7 @@ static void mavlink_test_setpoint_2dof_id(uint8_t system_id, uint8_t component_i
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-	mavlink_msg_setpoint_2dof_id_send(MAVLINK_COMM_1 , packet1.id , packet1.thrust_unit , packet1.angle , packet1.thrust );
+	mavlink_msg_setpoint_2dof_id_send(MAVLINK_COMM_1 , packet1.id , packet1.angle , packet1.thrust );
 	mavlink_msg_setpoint_2dof_id_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }
